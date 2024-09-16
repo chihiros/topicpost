@@ -1,0 +1,7 @@
+.task
+.env.supabase.local
+
+/app/tmp
+/app/ent/*
+!/app/ent/generate.go
+!/app/ent/schema

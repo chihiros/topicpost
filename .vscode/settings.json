@@ -1,0 +1,13 @@
+{
+  "cSpell.ignoreWords": [
+    "Supabase",
+    "Taskfile",
+    "cmds",
+    "dotenv",
+    "genenv",
+    "gomod",
+    "topicpost"
+  ],
+  "prettier.singleQuote": false,
+  "editor.formatOnSave": true,
+}

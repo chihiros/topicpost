@@ -1,0 +1,153 @@
+version: 3
+
+dotenv:
+  - .env.supabase.local
+
+tasks:
+  setup:
+    desc: Setup Supabase
+    cmds:
+      - task: supabase/init
+      - task: supabase/start
+      - task: supabase/status/genenv
+      - task: gen
+    interactive: true
+
+  start:
+    desc: Start Supabase and Docker
+    cmds:
+      - task: supabase/start
+      - task: docker/up
+      - task: supabase/status/genenv
+    interactive: true
+
+  check:
+    desc: Check required commands
+    cmds:
+      - command -v docker > /dev/null || echo "docker is not installed"
+      - command -v go > /dev/null || echo "go is not installed"
+      - command -v goose > /dev/null || echo "goose is not installed"
+      - command -v supabase > /dev/null || echo "supabase is not installed"
+    ignore_error: true
+
+  supabase/init:
+    desc: Initialize Supabase project
+    cmds:
+      - supabase init
+    interactive: true
+    ignore_error: true
+
+  supabase/start:
+    desc: Start Supabase
+    cmds:
+      - supabase start
+    interactive: true
+
+  supabase/stop:
+    desc: Stop Supabase
+    cmds:
+      - supabase stop
+
+  supabase/status:
+    desc: Check Supabase status
+    cmds:
+      - supabase status
+    interactive: true
+
+  supabase/status/genenv:
+    desc: Generate .env from supabase status
+    cmds:
+      - ./generate_env.sh
+    deps:
+      - supabase/start
+
+  docker/up:
+    desc: Start Docker
+    cmds:
+      - docker compose up
+
+  docker/build:
+    desc: Build Docker
+    cmds:
+      - docker compose build
+
+  docker/down:
+    desc: Stop Docker
+    cmds:
+      - docker compose down
+
+  gomod/init:
+    desc: Initialize go.mod
+    dir: app
+    cmds:
+      - go mod init server
+
+  gomod/tidy:
+    desc: Tidy go.mod
+    dir: app
+    cmds:
+      - go mod tidy
+
+  gomod/update:
+    desc: Update go.mod
+    dir: app
+    cmds:
+      - go get -u && go mod tidy
+
+  goose/create/migration:
+    desc: Create migration
+    cmds:
+      - |
+        if [ "{{.CLI_ARGS}}" = "" ]; then
+          echo "ファイル名を指定してください！"
+          echo "$ task goose/create/migration -- [ファイル名]"
+        else
+          goose -dir ./schema/migrations create {{.CLI_ARGS}} sql
+        fi
+
+  goose/create/seed:
+    desc: Create seed
+    cmds:
+      - |
+        if [ "{{.CLI_ARGS}}" = "" ]; then
+          echo "ファイル名を指定してください！"
+          echo "$ task goose/create/seed -- [ファイル名]"
+        else
+          goose -dir ./schema/seeds create {{.CLI_ARGS}} sql
+        fi
+
+  goose/migration/status:
+    desc: Check migration status
+    cmds:
+      - goose -dir ./schema/migrations postgres ${SUPABASE_DB_URL} status
+
+  goose/seed/status:
+    desc: Check seed status
+    cmds:
+      - goose -dir ./schema/seeds postgres ${SUPABASE_DB_URL} status
+
+  goose/migration/up:
+    desc: Migrate up
+    cmds:
+      - goose -dir ./schema/migrations postgres ${SUPABASE_DB_URL} up
+
+  goose/migration/down:
+    desc: Migrate down
+    cmds:
+      - goose -dir ./schema/migrations postgres ${SUPABASE_DB_URL} down
+
+  goose/seed/up:
+    desc: Seed up
+    cmds:
+      - goose -dir ./schema/seeds postgres ${SUPABASE_DB_URL} up
+
+  goose/seed/down:
+    desc: Seed down
+    cmds:
+      - goose -dir ./schema/seeds postgres ${SUPABASE_DB_URL} down
+
+  gen:
+    desc: ORM ent codegen
+    dir: app
+    cmds:
+      - go generate ./ent
