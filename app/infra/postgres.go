@@ -10,7 +10,7 @@ import (
 )
 
 func NewPostgresConnection() (*ent.Client, error) {
-	DB_URL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
+	url := createPostgresUrl(
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"),
 		os.Getenv("DB_HOST"),
@@ -18,12 +18,7 @@ func NewPostgresConnection() (*ent.Client, error) {
 		os.Getenv("DB_NAME"),
 	)
 
-	// Dockerでの開発環境ではSSLを無効化する
-	if os.Getenv("DB_HOST") == "db" {
-		DB_URL += "?sslmode=disable"
-	}
-
-	client, err := ent.Open("postgres", DB_URL)
+	client, err := ent.Open("postgres", url)
 	if err != nil {
 		log.Printf("failed opening connection to postgres: %v", err)
 		return nil, err
@@ -42,4 +37,20 @@ func NewPostgresConnectionX() *ent.Client {
 	}
 
 	return conn
+}
+
+func createPostgresUrl(db_user, db_password, db_host, db_port, db_name string) string {
+	url := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
+		db_user,
+		db_password,
+		db_host,
+		db_port,
+		db_name,
+	)
+
+	if db_host == "db" {
+		url += "?sslmode=disable"
+	}
+
+	return url
 }
