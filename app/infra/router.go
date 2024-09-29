@@ -2,10 +2,6 @@ package infra
 
 import (
 	"app/middle/authrization"
-	"app/modules/contact"
-	"app/modules/og"
-	"app/modules/recreations"
-	"app/modules/users"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -36,10 +32,6 @@ func NewRouter() *chi.Mux {
 	}))
 
 	r.Route("/v1", func(r chi.Router) {
-		users.Router(r, NewPostgresConnectionX())
-		recreations.Router(r, NewPostgresConnectionX())
-		contact.Router(r)
-		og.Router(r)
 
 		// 疎通確認用のAPI
 		r.Route("/now", func(r chi.Router) {

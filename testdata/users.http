@@ -1,0 +1,14 @@
+@HOST=http://localhost:8686
+### 疎通確認
+GET {{HOST}}/v1/now
+
+### ユーザー一覧の取得
+GET {{HOST}}/v1/users
+
+#### ユーザーの追加
+POST {{HOST}}/v1/users
+Context-Type: application/json
+
+{
+    "uid": 1111
+}
