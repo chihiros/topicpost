@@ -1,6 +1,7 @@
 package infra
 
 import (
+	"app/interface/controller"
 	"app/middle/authrization"
 	"encoding/json"
 	"net/http"
@@ -32,6 +33,10 @@ func NewRouter() *chi.Mux {
 	}))
 
 	r.Route("/v1", func(r chi.Router) {
+		userController := controller.NewUserController()
+		r.Route("/users", func(r chi.Router) {
+			r.Post("/", userController.CreateUser)
+		})
 
 		// 疎通確認用のAPI
 		r.Route("/now", func(r chi.Router) {
