@@ -1,5 +1,6 @@
 {
   "cSpell.ignoreWords": [
+    "SAMEORIGIN",
     "Supabase",
     "Taskfile",
     "applog",
@@ -7,6 +8,7 @@
     "dotenv",
     "genenv",
     "gomod",
+    "nosniff",
     "topicpost",
     "usecase"
   ],
