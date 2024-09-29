@@ -5,3 +5,5 @@
 /app/ent/*
 !/app/ent/generate.go
 !/app/ent/schema
+
+/supabase/.temp
