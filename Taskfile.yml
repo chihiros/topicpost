@@ -32,9 +32,9 @@ tasks:
     cmds:
       - |
         if [ ! -f .env.supabase.local ]; then
-          echo -e "\033[31m.env.supabase.local is missing.\033[0m"
+          echo -e "\033[33m[Warning]\033[0m .env.supabase.local is missing."
         else
-          echo -e "\033[32m.env.supabase.local exists.\033[0m"
+          echo -e "\033[32m[OK]\033[0m .env.supabase.local exists."
         fi
     silent: true
 
