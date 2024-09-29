@@ -33,7 +33,14 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	resBody := usecase.UserResponse{
+		ID:        res.ID,
+		UID:       res.UID,
+		CreatedAt: res.CreatedAt,
+		UpdatedAt: res.UpdatedAt,
+	}
+
 	// リクエストが正常に処理された場合のレスポンス
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(res)
+	json.NewEncoder(w).Encode(resBody)
 }

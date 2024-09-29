@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"app/usecase"
+	"app/entity"
 	"time"
 
 	"github.com/google/uuid"
@@ -14,8 +14,8 @@ func NewUserRepository() *UserRepository {
 	return &UserRepository{}
 }
 
-func (ur *UserRepository) CreateUser(uid uuid.UUID) (usecase.UserResponse, error) {
-	return usecase.UserResponse{
+func (ur *UserRepository) CreateUser(uid uuid.UUID) (entity.User, error) {
+	return entity.User{
 		ID:        1,
 		UID:       uid,
 		CreatedAt: time.Now(),
