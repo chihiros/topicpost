@@ -2,6 +2,7 @@ package infra
 
 import (
 	"app/ent"
+	"fmt"
 	"log"
 	"os"
 
@@ -9,15 +10,13 @@ import (
 )
 
 func NewPostgresConnection() (*ent.Client, error) {
-	// DB_URL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
-	// 	os.Getenv("DB_USER"),
-	// 	os.Getenv("DB_PASSWORD"),
-	// 	os.Getenv("DB_HOST"),
-	// 	os.Getenv("DB_PORT"),
-	// 	os.Getenv("DB_NAME"),
-	// )
-
-	DB_URL := os.Getenv("SUPABASE_DB_URL")
+	DB_URL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_NAME"),
+	)
 
 	// Dockerでの開発環境ではSSLを無効化する
 	if os.Getenv("DB_HOST") == "db" {
