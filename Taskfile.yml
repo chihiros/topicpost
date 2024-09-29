@@ -24,6 +24,11 @@ tasks:
   check:
     desc: Check required commands
     cmds:
+      - task: check/commands
+
+  check/commands:
+    desc: Check required commands
+    cmds:
       - cmd: |
           apps=("docker" "go" "goose" "supabase")
           missing=0
