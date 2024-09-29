@@ -94,6 +94,8 @@ tasks:
 
   docker/up:
     desc: Start Docker
+    deps:
+      - docker/create/network
     cmds:
       - docker compose up
 
@@ -106,6 +108,12 @@ tasks:
     desc: Stop Docker
     cmds:
       - docker compose down
+
+  docker/create/network:
+    desc: Create Docker network
+    cmds:
+      - docker network connect $(docker network ls | grep "$(basename $(pwd))_default" | awk '{print $2}') supabase_db_supabase-local
+    ignore_error: true
 
   gomod/init:
     desc: Initialize go.mod

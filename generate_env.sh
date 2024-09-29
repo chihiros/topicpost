@@ -64,11 +64,11 @@ db_password=$(echo "$output" | grep "DB URL" | awk '{print $3}' | awk -F/ '{prin
 echo "SUPABASE_DB_PASSWORD=$db_password" >> .env.supabase.local
 
 # DB Host
-db_host=$(echo "$output" | grep "DB URL" | awk '{print $3}' | awk -F/ '{print $3}' | awk -F@ '{print $2}' | awk -F: '{print $1}')
+db_host=supabase_db_supabase-local
 echo "SUPABASE_DB_HOST=$db_host" >> .env.supabase.local
 
 # DB Port
-db_port=$(echo "$output" | grep "DB URL" | awk '{print $3}' | awk -F/ '{print $3}' | awk -F@ '{print $2}' | awk -F: '{print $2}')
+db_port=5432
 echo "SUPABASE_DB_PORT=$db_port" >> .env.supabase.local
 
 echo ".env.supabase.local file generated successfully"
