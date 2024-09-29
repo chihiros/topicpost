@@ -24,10 +24,22 @@ tasks:
   check:
     desc: Check required commands
     cmds:
-      - command -v docker > /dev/null || echo "docker is not installed"
-      - command -v go > /dev/null || echo "go is not installed"
-      - command -v goose > /dev/null || echo "goose is not installed"
-      - command -v supabase > /dev/null || echo "supabase is not installed"
+      - cmd: |
+          apps=("docker" "go" "goose" "supabase")
+          missing=0
+          for app in "${apps[@]}"; do
+            if ! command -v "$app" > /dev/null; then
+              echo -e "\033[33m[Warning]\033[0m $app is not installed"
+              missing=1
+            fi
+          done
+
+          if [ "$missing" -eq 0 ]; then
+            echo -e "\033[32mAll required commands are installed.\033[0m"
+          else
+            echo -e "\033[31mSome commands are missing.\033[0m"
+          fi
+    silent: true
     ignore_error: true
 
   supabase/init:
