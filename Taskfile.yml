@@ -22,9 +22,21 @@ tasks:
     interactive: true
 
   check:
-    desc: Check required commands
+    desc: Check required files and commands
     cmds:
+      - task: check/files
       - task: check/commands
+
+  check/files:
+    desc: Check required files
+    cmds:
+      - |
+        if [ ! -f .env.supabase.local ]; then
+          echo -e "\033[31m.env.supabase.local is missing.\033[0m"
+        else
+          echo -e "\033[32m.env.supabase.local exists.\033[0m"
+        fi
+    silent: true
 
   check/commands:
     desc: Check required commands
