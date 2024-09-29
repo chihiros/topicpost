@@ -1,6 +1,7 @@
 package main
 
 import (
+	"app/di"
 	"app/infra"
 	"app/middle/applog"
 	"net/http"
@@ -20,7 +21,10 @@ func main() {
 		time.Local = jst
 	}
 
-	r := infra.NewRouter()
+	userController := di.InitializeUserController()
+	r := infra.NewRouter(
+		userController,
+	)
 	if err := http.ListenAndServe(":8080", r); err != nil {
 		applog.Panic(err)
 	}

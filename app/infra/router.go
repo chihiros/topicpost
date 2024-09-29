@@ -1,7 +1,7 @@
 package infra
 
 import (
-	"app/di"
+	"app/interface/controller"
 	"app/middle/authrization"
 	"encoding/json"
 	"net/http"
@@ -13,7 +13,7 @@ import (
 	"github.com/go-chi/cors"
 )
 
-func NewRouter() *chi.Mux {
+func NewRouter(userController *controller.UserController) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(logger.Logger)
 	r.Use(middleware.Recoverer)
@@ -33,7 +33,6 @@ func NewRouter() *chi.Mux {
 	}))
 
 	r.Route("/v1", func(r chi.Router) {
-		userController := di.InitializeUserController()
 		r.Route("/users", func(r chi.Router) {
 			r.Post("/", userController.CreateUser)
 		})
