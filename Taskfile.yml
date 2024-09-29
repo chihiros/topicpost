@@ -151,3 +151,34 @@ tasks:
     dir: app
     cmds:
       - go generate ./ent
+
+  check/environment:
+    desc: "Check OS, OS version, and architecture"
+    cmds:
+      - cmd: |
+          echo -e "\033[34mChecking system information...\033[0m"
+          os_name=$(uname -s)
+          if [ "$os_name" = "Darwin" ]; then
+            echo -e "\033[32mOperating System:\033[0m macOS"
+            echo -e "\033[32mOS Version:\033[0m $(sw_vers -productVersion)"
+            echo -e "\033[32mArchitecture:\033[0m $(uname -m)"
+            echo -e "\033[32mCPU:\033[0m $(sysctl -n machdep.cpu.brand_string)"
+          elif [ "$os_name" = "Linux" ]; then
+            echo -e "\033[32mOperating System:\033[0m Linux"
+            if [ -f /etc/os-release ]; then
+              . /etc/os-release
+              echo -e "\033[32mOS Version:\033[0m $PRETTY_NAME"
+            else
+              echo -e "\033[33mOS version information not available\033[0m"
+            fi
+            echo -e "\033[32mArchitecture:\033[0m $(uname -m)"
+            echo -e "\033[32mCPU:\033[0m $(lscpu | grep 'Model name' | awk -F: '{print $2}' | sed 's/^ *//')"
+          elif [ "$(uname -o)" = "Msys" ] || [ "$(uname -o)" = "Cygwin" ] || [ "$os_name" = "Windows_NT" ]; then
+            echo -e "\033[32mOperating System:\033[0m Windows"
+            echo -e "\033[32mOS Version:\033[0m $(wmic os get Caption | grep -v Caption)"
+            echo -e "\033[32mArchitecture:\033[0m $(wmic os get osarchitecture | grep -v OSArchitecture)"
+            echo -e "\033[32mCPU:\033[0m $(wmic cpu get name | grep -v Name)"
+          else
+            echo -e "\033[33mUnsupported OS\033[0m"
+          fi
+    silent: true
