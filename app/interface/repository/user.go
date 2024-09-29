@@ -3,7 +3,8 @@ package repository
 import (
 	"app/ent"
 	"app/entity"
-	"time"
+	"context"
+	"fmt"
 
 	"github.com/google/uuid"
 )
@@ -18,11 +19,21 @@ func NewUserRepository(conn *ent.Client) *UserRepository {
 	}
 }
 
-func (ur *UserRepository) CreateUser(uid uuid.UUID) (entity.User, error) {
+func (ur *UserRepository) CreateUser(ctx context.Context, uid uuid.UUID) (entity.User, error) {
+	user, err := ur.conn.User.Create().
+		SetUID(uid).
+		Save(ctx)
+
+	fmt.Printf("user: %+v\n", user)
+
+	if err != nil {
+		return entity.User{}, err
+	}
+
 	return entity.User{
-		ID:        1,
-		UID:       uid,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		ID:        user.ID,
+		UID:       user.UID,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
 	}, nil
 }

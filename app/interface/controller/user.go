@@ -27,7 +27,7 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := uc.Usecase.CreateUser(req.UID)
+	res, err := uc.Usecase.CreateUser(r.Context(), req.UID)
 	if err != nil {
 		applog.Warn(err.Error())
 		return

@@ -2,12 +2,13 @@ package usecase
 
 import (
 	"app/entity"
+	"context"
 
 	"github.com/google/uuid"
 )
 
 type UserRepository interface {
-	CreateUser(uuid.UUID) (entity.User, error)
+	CreateUser(context.Context, uuid.UUID) (entity.User, error)
 }
 
 type UserUsecase struct {
@@ -20,6 +21,6 @@ func NewUserUsecase(repo UserRepository) *UserUsecase {
 	}
 }
 
-func (u *UserUsecase) CreateUser(uid uuid.UUID) (entity.User, error) {
-	return u.Repository.CreateUser(uid)
+func (u *UserUsecase) CreateUser(ctx context.Context, uid uuid.UUID) (entity.User, error) {
+	return u.Repository.CreateUser(ctx, uid)
 }
