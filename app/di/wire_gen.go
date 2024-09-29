@@ -7,6 +7,7 @@
 package di
 
 import (
+	"app/infra"
 	"app/interface/controller"
 	"app/interface/repository"
 	"app/usecase"
@@ -16,7 +17,8 @@ import (
 
 // プロバイダーセット
 func InitializeUserController() *controller.UserController {
-	userRepository := repository.NewUserRepository()
+	client := infra.NewPostgresConnectionX()
+	userRepository := repository.NewUserRepository(client)
 	userUsecase := usecase.NewUserUsecase(userRepository)
 	userController := controller.NewUserController(userUsecase)
 	return userController

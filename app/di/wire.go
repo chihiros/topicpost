@@ -4,6 +4,7 @@
 package di
 
 import (
+	"app/infra"
 	"app/interface/controller"
 	"app/interface/repository"
 	"app/usecase"
@@ -15,6 +16,7 @@ import (
 func InitializeUserController() *controller.UserController {
 	wire.Build(
 		repository.NewUserRepository, // リポジトリ
+		infra.NewPostgresConnectionX, // DB接続
 		wire.Bind(new(usecase.UserRepository), new(*repository.UserRepository)), // インターフェースと実装のバインド
 		usecase.NewUserUsecase,       // ユースケース
 		controller.NewUserController, // コントローラー
