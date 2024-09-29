@@ -42,4 +42,8 @@ Goのインストール
 
 gooseのインストール
 
-[goose - GitHub](<https://github.com/pressly/goose>)
+[goose - GitHub](https://github.com/pressly/goose)
+
+wireのインストール
+
+[Wire - GitHub](https://github.com/google/wire)

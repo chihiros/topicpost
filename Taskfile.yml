@@ -42,12 +42,14 @@ tasks:
     desc: Check required commands
     cmds:
       - cmd: |
-          apps=("docker" "go" "goose" "supabase")
+          apps=("docker" "go" "goose" "supabase" "wire")
           missing=0
           for app in "${apps[@]}"; do
             if ! command -v "$app" > /dev/null; then
               echo -e "\033[33m[Warning]\033[0m $app is not installed"
               missing=1
+            else
+              echo -e "\033[32m[OK]\033[0m $app is installed"
             fi
           done
 
@@ -180,6 +182,12 @@ tasks:
     dir: app
     cmds:
       - go generate ./ent
+
+  go/wire:
+    desc: Generate wire
+    dir: app
+    cmds:
+      - wire ./...
 
   check/environment:
     desc: "Check OS, OS version, and architecture"
