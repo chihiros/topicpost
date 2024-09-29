@@ -2,11 +2,13 @@
   "cSpell.ignoreWords": [
     "Supabase",
     "Taskfile",
+    "applog",
     "cmds",
     "dotenv",
     "genenv",
     "gomod",
-    "topicpost"
+    "topicpost",
+    "usecase"
   ],
   "prettier.singleQuote": false,
   "editor.formatOnSave": true,
