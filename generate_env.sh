@@ -51,4 +51,24 @@ echo "SUPABASE_S3_SECRET_KEY=$s3_secret_key" >> .env.supabase.local
 s3_region=$(echo "$output" | grep "S3 Region" | awk '{print $3}')
 echo "SUPABASE_S3_REGION=$s3_region" >> .env.supabase.local
 
+# DB Name
+db_name=$(echo "$output" | grep "DB URL" | awk '{print $3}' | awk -F/ '{print $4}')
+echo "SUPABASE_DB_NAME=$db_name" >> .env.supabase.local
+
+# DB User
+db_user=$(echo "$output" | grep "DB URL" | awk '{print $3}' | awk -F/ '{print $3}' | awk -F: '{print $1}')
+echo "SUPABASE_DB_USER=$db_user" >> .env.supabase.local
+
+# DB Password
+db_password=$(echo "$output" | grep "DB URL" | awk '{print $3}' | awk -F/ '{print $3}' | awk -F: '{print $2}' | awk -F@ '{print $1}')
+echo "SUPABASE_DB_PASSWORD=$db_password" >> .env.supabase.local
+
+# DB Host
+db_host=$(echo "$output" | grep "DB URL" | awk '{print $3}' | awk -F/ '{print $3}' | awk -F@ '{print $2}' | awk -F: '{print $1}')
+echo "SUPABASE_DB_HOST=$db_host" >> .env.supabase.local
+
+# DB Port
+db_port=$(echo "$output" | grep "DB URL" | awk '{print $3}' | awk -F/ '{print $3}' | awk -F@ '{print $2}' | awk -F: '{print $2}')
+echo "SUPABASE_DB_PORT=$db_port" >> .env.supabase.local
+
 echo ".env.supabase.local file generated successfully"
