@@ -14,6 +14,17 @@ npm install -g task-cli
 brew install go-task
 ```
 
+必要なコマンドが入っているかの確認
+
+```sh
+task check
+```
+
+足りないコマンドがある場合は、以下の画像のように `[Warning] %s is not installed` と表示されます
+不足がある場合はインストールをしてください
+
+![task-check-command](docs/imgs/readme_task_check.png)
+
 ### ローカル環境の準備
 
 - Dockerまたは、OrbStackのインストール
@@ -22,12 +33,13 @@ brew install go-task
 [OrbStack](https://orbstack.dev/)
 
 - Supabase CLIのインストール
+
 [Supabase CLI - Supabase.com](https://supabase.com/docs/guides/cli/getting-started)
 
-```sh
-brew install supabase/tap/supabase
-```
+Goのインストール
 
-```sh
-task setup
-```
+[Go - Getting Started](https://go.dev/doc/install)
+
+gooseのインストール
+
+[goose - GitHub](<https://github.com/pressly/goose>)
