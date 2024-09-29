@@ -7,3 +7,4 @@
 !/app/ent/schema
 
 /supabase/.temp
+/supabase/.branches
