@@ -10,6 +10,12 @@ type UserUsecase struct {
 	Repository UserRepository
 }
 
+func NewUserUsecase(repo UserRepository) *UserUsecase {
+	return &UserUsecase{
+		Repository: repo,
+	}
+}
+
 func (u *UserUsecase) CreateUser(uid uuid.UUID) (UserResponse, error) {
 	return u.Repository.CreateUser(uid)
 }

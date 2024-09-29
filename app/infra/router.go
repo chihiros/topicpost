@@ -1,7 +1,7 @@
 package infra
 
 import (
-	"app/interface/controller"
+	"app/di"
 	"app/middle/authrization"
 	"encoding/json"
 	"net/http"
@@ -33,7 +33,7 @@ func NewRouter() *chi.Mux {
 	}))
 
 	r.Route("/v1", func(r chi.Router) {
-		userController := controller.NewUserController()
+		userController := di.InitializeUserController()
 		r.Route("/users", func(r chi.Router) {
 			r.Post("/", userController.CreateUser)
 		})

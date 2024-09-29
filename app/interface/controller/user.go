@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"app/interface/repository"
 	"app/middle/applog"
 	"app/usecase"
 	"encoding/json"
@@ -12,17 +11,9 @@ type UserController struct {
 	Usecase *usecase.UserUsecase
 }
 
-func NewUserController() *UserController {
-	u := NewUserUsecase()
+func NewUserController(u *usecase.UserUsecase) *UserController {
 	return &UserController{
 		Usecase: u,
-	}
-}
-
-func NewUserUsecase() *usecase.UserUsecase {
-	repo := repository.NewUserRepository()
-	return &usecase.UserUsecase{
-		Repository: repo,
 	}
 }
 
