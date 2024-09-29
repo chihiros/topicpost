@@ -187,7 +187,7 @@ tasks:
     desc: Generate wire
     dir: app
     cmds:
-      - wire ./...
+      - wire ./di
 
   check/environment:
     desc: "Check OS, OS version, and architecture"
