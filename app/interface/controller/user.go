@@ -18,10 +18,7 @@ func NewUserController(u *usecase.UserUsecase) *UserController {
 }
 
 func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
-	// POSTのBodyを読み込む
 	req := usecase.UserRequest{}
-
-	// リクエストのBodyをJSONに変換
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		applog.Warn(err.Error())
 		return
@@ -40,7 +37,6 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 		UpdatedAt: res.UpdatedAt,
 	}
 
-	// リクエストが正常に処理された場合のレスポンス
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(resBody)
 }
