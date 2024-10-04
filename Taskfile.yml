@@ -227,3 +227,9 @@ tasks:
             echo -e "\033[33mUnsupported OS\033[0m"
           fi
     silent: true
+
+  ogen:
+    desc: Generate OpenAPI client
+    cmds:
+      - cmd: "docker run --rm -v $(pwd):/local openapitools/openapi-generator-cli generate -i /local/docs/openapi.yml -g typescript-axios --additional-properties supportsES6=true,withInterfaces=true -o /local/docs/test-generate"
+      - cmd: rm -rf docs/test-generate
