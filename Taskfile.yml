@@ -197,6 +197,11 @@ tasks:
     cmds:
       - wire ./di
 
+  go/test:
+    desc: Run Go test
+    cmds:
+      - go test -v ./...
+
   check/environment:
     desc: "Check OS, OS version, and architecture"
     cmds:
