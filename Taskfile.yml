@@ -108,6 +108,7 @@ tasks:
     desc: Stop Docker
     cmds:
       - docker compose down
+      - task: supabase/stop
 
   docker/create/network:
     desc: Create Docker network
