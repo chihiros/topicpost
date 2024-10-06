@@ -116,6 +116,11 @@ tasks:
       - docker network connect $(docker network ls | grep "$(basename $(pwd))_default" | awk '{print $2}') supabase_db_supabase-local
     ignore_error: true
 
+  docker/logs:
+    desc: Show Docker logs
+    cmds:
+      - docker logs -f $(docker ps -q --filter "name=$(basename $(pwd))-api")
+
   gomod/init:
     desc: Initialize go.mod
     dir: app
