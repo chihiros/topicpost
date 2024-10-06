@@ -17,8 +17,10 @@ tasks:
     desc: Start Supabase and Docker
     cmds:
       - task: supabase/start
-      - task: docker/up
       - task: supabase/status/genenv
+      - task: docker/build
+      - task: docker/up
+      - task: docker/create/network
     interactive: true
 
   check:
@@ -89,15 +91,11 @@ tasks:
     desc: Generate .env from supabase status
     cmds:
       - ./generate_env.sh
-    deps:
-      - supabase/start
 
   docker/up:
     desc: Start Docker
-    deps:
-      - docker/create/network
     cmds:
-      - docker compose up
+      - docker compose up -d
 
   docker/build:
     desc: Build Docker
