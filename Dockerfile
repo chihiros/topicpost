@@ -1,6 +1,7 @@
 FROM golang:1.23-bullseye AS docker
 WORKDIR /app
 COPY /app .
+RUN go get github.com/air-verse/air
 RUN go install github.com/air-verse/air
 CMD air
 
