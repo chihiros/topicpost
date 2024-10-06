@@ -85,15 +85,10 @@ components:
           type: integer
           format: int64
           description: ユーザーID
-        name:
+        uid:
           type: string
-          description: ユーザー名
-        email:
-          type: string
-          description: メールアドレス
-        password:
-          type: string
-          description: パスワード
+          format: uuid
+          description: Supabaseが発行したUID
         created_at:
           type: string
           format: date-time
