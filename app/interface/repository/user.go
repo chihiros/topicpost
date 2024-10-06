@@ -4,7 +4,6 @@ import (
 	"app/ent"
 	"app/entity"
 	"context"
-	"fmt"
 
 	"github.com/google/uuid"
 )
@@ -23,8 +22,6 @@ func (ur *UserRepository) CreateUser(ctx context.Context, uid uuid.UUID) (entity
 	user, err := ur.conn.User.Create().
 		SetUID(uid).
 		Save(ctx)
-
-	fmt.Printf("user: %+v\n", user)
 
 	if err != nil {
 		return entity.User{}, err
