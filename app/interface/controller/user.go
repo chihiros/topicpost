@@ -7,6 +7,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/go-chi/render"
 )
 
 type UserController struct {
@@ -39,8 +41,8 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 			Message: err.Error(),
 		}
 
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(errorResponse)
+		render.Status(r, http.StatusInternalServerError)
+		render.JSON(w, r, errorResponse)
 		return
 	}
 
@@ -53,8 +55,8 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(resBody)
+	render.Status(r, http.StatusOK)
+	render.JSON(w, r, resBody)
 }
 
 func (uc *UserController) GetUsers(w http.ResponseWriter, r *http.Request) {
@@ -80,6 +82,6 @@ func (uc *UserController) GetUsers(w http.ResponseWriter, r *http.Request) {
 		Data: resBody,
 	}
 
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(res)
+	render.Status(r, http.StatusOK)
+	render.JSON(w, r, res)
 }
