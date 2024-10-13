@@ -80,6 +80,11 @@ components:
 
     UserResponse:
       type: object
+      required:
+        - id
+        - uid
+        - created_at
+        - updated_at
       properties:
         id:
           type: integer

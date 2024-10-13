@@ -47,7 +47,7 @@ tasks:
     desc: Check required commands
     cmds:
       - cmd: |
-          apps=("docker" "go" "goose" "supabase" "wire")
+          apps=("docker" "go" "goose" "supabase" "wire" "spectral")
           missing=0
           for app in "${apps[@]}"; do
             if ! command -v "$app" > /dev/null; then
@@ -240,6 +240,11 @@ tasks:
             echo -e "\033[33mUnsupported OS\033[0m"
           fi
     silent: true
+
+  olint:
+    desc: Lint OpenAPI
+    cmds:
+      - spectral lint docs/openapi.yml
 
   ogen:
     desc: Generate OpenAPI client
