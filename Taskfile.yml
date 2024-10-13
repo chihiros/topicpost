@@ -269,5 +269,6 @@ tasks:
             # --global-property models,modelDocs=false \ # utils.goも削除されてしますため、苦肉の策 \
             --import-mappings uuid.UUID=github.com/google/uuid \
             --type-mappings string+uuid=uuid.UUID \
+            --type-mappings int64=int \
             --package-name=model \
       - cmd: find app/interface/model/ -mindepth 1 ! \( -name 'model_*.go' -o -name 'utils.go' -o -name '.gitkeep' \) | xargs rm -rf
