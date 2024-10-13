@@ -289,4 +289,4 @@ tasks:
   ogen-go-clean:
     desc: Clean unnecessary files # global-propertyだけで対応できるならこの作業は不要
     cmds:
-      - cmd: find app/interface/model/ -mindepth 1 ! \( -name 'model_*.go' -o -name '.gitkeep' \) | xargs rm -rf
+      - cmd: find app/interface/model/ -mindepth 1 ! \( -name 'model_*.go' -o -name 'utils.go' -o -name '.gitkeep' \) | xargs rm -rf
