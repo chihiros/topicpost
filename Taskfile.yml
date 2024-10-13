@@ -13,17 +13,26 @@ tasks:
       - task: gen
     interactive: true
 
-  start:
+  build:
     desc: Start Supabase and Docker
     cmds:
       - task: supabase/start
       - task: supabase/status/genenv
       - task: gen
       - task: go/wire
+      - task: ogen-go
       - task: docker/build
+    interactive: true
+
+  up:
+    desc: Start Docker
+    cmds:
+      - task: supabase/start
+      - task: supabase/status/genenv
       - task: docker/up
       - task: docker/create/network
       - task: goose/migration/up
+      - task: docker/logs
     interactive: true
 
   check:
