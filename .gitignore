@@ -4,6 +4,7 @@
 /app/tmp
 /app/ent/*
 /app/di/wire_gen.go
+/app/interface/model/*
 !/app/ent/generate.go
 !/app/ent/schema
 
