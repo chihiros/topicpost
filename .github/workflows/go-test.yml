@@ -32,6 +32,9 @@ jobs:
     - name: Run OpenAPI generator
       run: task ogen-go-generate
 
+    - name: Run wire
+      run: task go/wire
+
     - name: Build
       run: go build -v ./...
 
