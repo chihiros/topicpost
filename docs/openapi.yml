@@ -48,6 +48,12 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
 
         # 5xx系のレスポンス
+        500:
+          description: サーバーエラー
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
     post:
       tags: [User]
@@ -81,6 +87,12 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
 
         # 5xx系のレスポンス
+        500:
+          description: サーバーエラー
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
 components:
   securitySchemes:
