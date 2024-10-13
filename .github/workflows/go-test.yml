@@ -29,6 +29,9 @@ jobs:
     - name: Generate ent code
       run: task gen
 
+    - name: Run OpenAPI generator
+      run: task ogen-go
+
     - name: Build
       run: go build -v ./...
 
