@@ -30,7 +30,7 @@ jobs:
       run: task gen
 
     - name: Run OpenAPI generator
-      run: task ogen-go
+      run: task ogen-go-generate
 
     - name: Build
       run: go build -v ./...
