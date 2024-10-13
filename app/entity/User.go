@@ -7,8 +7,8 @@ import (
 )
 
 type User struct {
-	ID        int       `json:"id"`
-	UID       uuid.UUID `json:"uid"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        int
+	UID       uuid.UUID
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
