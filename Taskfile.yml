@@ -265,4 +265,4 @@ tasks:
             --import-mappings uuid.UUID=github.com/google/uuid \
             --type-mappings string+uuid=uuid.UUID \
             --package-name=model \
-      - cmd: find app/interface/model/ -mindepth 1 ! \( -name 'model_*.go' -o -name 'utils.go' \) | xargs rm -rf
+      - cmd: find app/interface/model/ -mindepth 1 ! \( -name 'model_*.go' -o -name 'utils.go' -o -name '.gitkeep' \) | xargs rm -rf
