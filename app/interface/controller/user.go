@@ -26,7 +26,7 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := uc.Usecase.CreateUser(r.Context(), req.UID)
+	res, err := uc.Usecase.CreateUser(r.Context(), req.Uid)
 	if err != nil {
 		applog.Warn(err.Error())
 
@@ -45,8 +45,8 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resBody := model.UserResponse{
-		ID:        res.ID,
-		UID:       res.UID,
+		Id:        res.ID,
+		Uid:       res.UID,
 		CreatedAt: res.CreatedAt,
 		UpdatedAt: res.UpdatedAt,
 	}
