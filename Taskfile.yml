@@ -269,24 +269,14 @@ tasks:
   ogen-go:
     desc: Generate OpenAPI client
     cmds:
-      - task: ogen-go-generate
-      - task: ogen-go-clean
-
-  ogen-go-generate:
-    desc: Generate OpenAPI client
-    cmds:
       - cmd: |
           docker run --rm -v $(pwd):/local \
             openapitools/openapi-generator-cli generate \
             -i /local/docs/openapi.yml \
             -g go \
             -o /local/app/interface/model \
+            --global-property models,supportingFiles=utils.go,modelDocs=false \
             --import-mappings uuid.UUID=github.com/google/uuid \
             --type-mappings string+uuid=uuid.UUID \
             --type-mappings int64=int \
             --package-name=model
-
-  ogen-go-clean:
-    desc: Clean unnecessary files # global-propertyだけで対応できるならこの作業は不要
-    cmds:
-      - cmd: find app/interface/model/ -mindepth 1 ! \( -name 'model_*.go' -o -name 'utils.go' -o -name '.gitkeep' \) | xargs rm -rf

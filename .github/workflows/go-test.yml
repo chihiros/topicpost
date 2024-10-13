@@ -30,7 +30,7 @@ jobs:
       run: task gen
 
     - name: Run OpenAPI generator
-      run: task ogen-go-generate
+      run: task ogen-go
 
     - name: wire install
       run: go install github.com/google/wire/cmd/wire@latest
