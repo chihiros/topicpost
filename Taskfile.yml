@@ -261,7 +261,7 @@ tasks:
             -i /local/docs/openapi.yml \
             -g go \
             -o /local/app/interface/model \
-            # --global-property models,modelDocs=false \ # utils.goも削除されてしますため、苦肉の策
+            # --global-property models,modelDocs=false \ # utils.goも削除されてしますため、苦肉の策 \
             --import-mappings uuid.UUID=github.com/google/uuid \
             --type-mappings string+uuid=uuid.UUID \
             --package-name=model \
