@@ -18,9 +18,12 @@ tasks:
     cmds:
       - task: supabase/start
       - task: supabase/status/genenv
+      - task: gen
+      - task: go/wire
       - task: docker/build
       - task: docker/up
       - task: docker/create/network
+      - task: goose/migration/up
     interactive: true
 
   check:
@@ -173,6 +176,7 @@ tasks:
     desc: Migrate up
     cmds:
       - goose -dir ./schema/migrations postgres ${SUPABASE_DB_URL} up
+    ignore_error: true
 
   goose/migration/down:
     desc: Migrate down
@@ -242,3 +246,15 @@ tasks:
     cmds:
       - cmd: "docker run --rm -v $(pwd):/local openapitools/openapi-generator-cli generate -i /local/docs/openapi.yml -g typescript-axios --additional-properties supportsES6=true,withInterfaces=true -o /local/docs/test-generate"
       - cmd: rm -rf docs/test-generate
+
+  ogen-go:
+    desc: Generate OpenAPI client
+    cmds:
+      - cmd: |
+          docker run --rm -v $(pwd):/local openapitools/openapi-generator-cli generate \
+            -i /local/docs/openapi.yml \
+            -g go \
+            -o /local/docs/generated \
+            --global-property models,modelDocs=!true \
+            --import-mappings uuid.UUID=github.com/google/uuid \
+            --type-mappings string+uuid=uuid.UUID
