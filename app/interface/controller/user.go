@@ -45,12 +45,41 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resBody := model.UserResponse{
-		Id:        res.ID,
-		Uid:       res.UID,
-		CreatedAt: res.CreatedAt,
-		UpdatedAt: res.UpdatedAt,
+		Data: model.User{
+			Id:        res.ID,
+			Uid:       res.UID,
+			CreatedAt: res.CreatedAt,
+			UpdatedAt: res.UpdatedAt,
+		},
 	}
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(resBody)
+}
+
+func (uc *UserController) GetUsers(w http.ResponseWriter, r *http.Request) {
+	users, err := uc.Usecase.GetUsers(r.Context())
+	if err != nil {
+		applog.Warn(err.Error())
+		return
+	}
+
+	resBody := make([]model.User, 0, len(users))
+	for _, u := range users {
+		resUser := model.User{
+			Id:        u.ID,
+			Uid:       u.UID,
+			CreatedAt: u.CreatedAt,
+			UpdatedAt: u.UpdatedAt,
+		}
+
+		resBody = append(resBody, resUser)
+	}
+
+	res := model.UserListResponse{
+		Data: resBody,
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
 }

@@ -20,6 +20,35 @@ tags:
 
 paths:
   /users:
+    get:
+      tags: [User]
+      security:
+        - bearerAuth: []
+      operationId: users-get
+      summary: ユーザー一覧を取得する
+      description: |-
+        ユーザー一覧を取得するAPIです
+      responses:
+        # 2xx系のレスポンス
+        200:
+          description: ユーザー一覧取得成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserListResponse"
+
+        # 4xx系のレスポンス
+        400:
+          description: リクエストが不正
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        # 5xx系のレスポンス
+
     post:
       tags: [User]
       security:
@@ -82,7 +111,7 @@ components:
           description: Supabaseが発行したUIDを入れる
           example: 123e4567-e89b-12d3-a456-426614174000
 
-    UserResponse:
+    User:
       type: object
       required:
         - id
@@ -106,3 +135,20 @@ components:
           type: string
           format: date-time
           description: 更新日時
+
+    UserResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/User"
+
+    UserListResponse:
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"

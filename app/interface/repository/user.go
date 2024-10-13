@@ -34,3 +34,24 @@ func (ur *UserRepository) CreateUser(ctx context.Context, uid uuid.UUID) (entity
 		UpdatedAt: user.UpdatedAt,
 	}, nil
 }
+
+func (ur *UserRepository) GetUsers(ctx context.Context) ([]entity.User, error) {
+	users, err := ur.conn.User.Query().
+		All(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var res []entity.User
+	for _, user := range users {
+		res = append(res, entity.User{
+			ID:        user.ID,
+			UID:       user.UID,
+			CreatedAt: user.CreatedAt,
+			UpdatedAt: user.UpdatedAt,
+		})
+	}
+
+	return res, nil
+}

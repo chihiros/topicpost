@@ -34,6 +34,7 @@ func NewRouter(userController *controller.UserController) *chi.Mux {
 
 	r.Route("/v1", func(r chi.Router) {
 		r.Route("/users", func(r chi.Router) {
+			r.Get("/", userController.GetUsers)
 			r.Post("/", userController.CreateUser)
 		})
 

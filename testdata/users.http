@@ -2,6 +2,9 @@
 ### 疎通確認
 GET {{HOST}}/v1/now
 
+### ユーザー一覧を取得する
+GET {{HOST}}/v1/users
+
 #### ユーザーの追加
 POST {{HOST}}/v1/users
 Context-Type: application/json
