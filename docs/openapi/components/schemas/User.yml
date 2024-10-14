@@ -7,7 +7,7 @@ required:
 properties:
   id:
     type: integer
-    format: int64
+    format: int
     description: ユーザーID
   uid:
     type: string
