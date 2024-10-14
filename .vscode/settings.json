@@ -12,6 +12,8 @@
     "codegen",
     "dotenv",
     "elif",
+    "entgo",
+    "entsql",
     "genenv",
     "gomod",
     "machdep",
