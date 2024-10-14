@@ -1,0 +1,9 @@
+type: object
+required:
+  - uid
+properties:
+  uid:
+    type: string
+    format: uuid
+    description: Supabaseが発行したUIDを入れる
+    example: 123e4567-e89b-12d3-a456-426614174000

@@ -1,0 +1,73 @@
+get:
+  tags: [User]
+  security:
+    - bearerAuth: []
+  operationId: users-get
+  summary: ユーザー一覧を取得する
+  description: |-
+    ユーザー一覧を取得するAPIです
+  responses:
+    # 2xx系のレスポンス
+    200:
+      description: ユーザー一覧取得成功
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../components/schemas/UserListResponse.yml
+
+    # 4xx系のレスポンス
+    400:
+      description: リクエストが不正
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yml
+
+    # 5xx系のレスポンス
+    500:
+      description: サーバーエラー
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yml
+
+post:
+  tags: [User]
+  security:
+    - bearerAuth: []
+  operationId: users-post
+  summary: ユーザーを作成する
+  description: |-
+    ユーザーを作成するAPIです
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/UserRequest.yml
+  responses:
+    # 2xx系のレスポンス
+    200:
+      description: ユーザー作成成功
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/UserResponse.yml
+
+    # 4xx系のレスポンス
+    400:
+      description: リクエストが不正
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yml
+
+    # 5xx系のレスポンス
+    500:
+      description: サーバーエラー
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yml

@@ -1,0 +1,51 @@
+openapi: "3.0.3"
+info:
+  title: TopicPost API仕様書
+  version: "1.0"
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://www.topicpost.net
+    description: 本番環境
+  - url: https://stg.topicpost.net
+    description: 検証環境
+
+tags:
+  - name: User
+    description: ユーザー情報に関するAPI
+  - name: Profile
+    description: プロフィール情報に関するAPI
+
+paths:
+  /users:
+    $ref: ./paths/users.yml
+
+  # /profiles:
+  # get: # プロフィールの一覧取得
+  # get: # プロフィールの単体取得
+  # post: # プロフィールの作成
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ErrorResponse:
+      $ref: ./components/schemas/ErrorResponse.yml
+
+    UserRequest:
+      $ref: ./components/schemas/UserRequest.yml
+
+    User:
+      $ref: ./components/schemas/User.yml
+
+    UserResponse:
+      $ref: ./components/schemas/UserResponse.yml
+
+    UserListResponse:
+      $ref: ./components/schemas/UserListResponse.yml

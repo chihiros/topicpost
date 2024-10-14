@@ -272,7 +272,7 @@ tasks:
     cmds:
       - cmd: |
           docker run --rm -v $(pwd):/local openapitools/openapi-generator-cli generate \
-            -i /local/docs/openapi.yml \
+            -i /local/docs/openapi/openapi.yml \
             -g typescript-axios \
             --additional-properties supportsES6=true,withInterfaces=true \
             -o /local/docs/test-generate
@@ -284,7 +284,7 @@ tasks:
       - cmd: |
           docker run --rm -v $(pwd):/local \
             openapitools/openapi-generator-cli generate \
-            -i /local/docs/openapi.yml \
+            -i /local/docs/openapi/openapi.yml \
             -g go \
             -o /local/app/interface/model \
             --global-property models,supportingFiles=utils.go,modelDocs=false \
