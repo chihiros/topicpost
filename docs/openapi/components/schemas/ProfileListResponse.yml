@@ -1,0 +1,7 @@
+required:
+  - data
+properties:
+  data:
+    type: array
+    items:
+      $ref: ./Profile.yml

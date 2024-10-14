@@ -1,0 +1,14 @@
+type: object
+properties:
+  name:
+    type: string
+    description: ユーザー名
+    example: ユーザー名
+  icon_url:
+    type: string
+    description: アイコンURL
+    example: https://example.com/icon.png
+  prefecture:
+    type: string
+    description: 都道府県番号:JIS X 0401に準拠
+    example: "13"

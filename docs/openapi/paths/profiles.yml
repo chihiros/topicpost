@@ -1,0 +1,34 @@
+get:
+  tags: [Profile]
+  security:
+    - bearerAuth: []
+  operationId: profiles-get
+  summary: ユーザー一覧を取得する
+  description: |-
+    ユーザー一覧を取得するAPIです
+  responses:
+    # 2xx系のレスポンス
+    "200":
+      description: ユーザー一覧取得成功
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../components/schemas/ProfileListResponse.yml
+
+    # 4xx系のレスポンス
+    "400":
+      description: リクエストが不正
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yml
+
+    # 5xx系のレスポンス
+    "500":
+      description: サーバーエラー
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yml

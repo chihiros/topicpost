@@ -22,6 +22,9 @@ paths:
   /users:
     $ref: ./paths/users.yml
 
+  /profiles:
+    $ref: ./paths/profiles.yml
+
   # /profiles:
   # get: # プロフィールの一覧取得
   # get: # プロフィールの単体取得
@@ -49,3 +52,15 @@ components:
 
     UserListResponse:
       $ref: ./components/schemas/UserListResponse.yml
+
+    ProfileRequest:
+      $ref: ./components/schemas/ProfileRequest.yml
+
+    Profile:
+      $ref: ./components/schemas/Profile.yml
+
+    ProfileResponse:
+      $ref: ./components/schemas/ProfileResponse.yml
+
+    ProfileListResponse:
+      $ref: ./components/schemas/ProfileListResponse.yml

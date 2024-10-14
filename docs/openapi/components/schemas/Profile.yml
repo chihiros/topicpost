@@ -1,0 +1,34 @@
+type: object
+required:
+  - id
+  - name
+  - created_at
+  - updated_at
+properties:
+  id:
+    type: integer
+    format: int
+    description: シーケンスID
+    example: 1
+  name:
+    type: string
+    description: ユーザー名
+    example: たろう
+  icon_url:
+    type: string
+    description: アイコンURL
+    example: https://example.com/icon.png
+  prefecture:
+    type: string
+    description: 都道府県番号:JIS X 0401に準拠
+    example: "13"
+  created_at:
+    type: string
+    format: date-time
+    description: 作成日時
+    example: "2021-01-23T01:23:45Z"
+  updated_at:
+    type: string
+    format: date-time
+    description: 更新日時
+    example: "2021-01-23T01:23:45Z"
