@@ -265,7 +265,7 @@ tasks:
   olint:
     desc: Lint OpenAPI
     cmds:
-      - spectral lint docs/openapi.yml
+      - spectral lint docs/openapi/openapi.yml
 
   ogen:
     desc: Generate OpenAPI client
