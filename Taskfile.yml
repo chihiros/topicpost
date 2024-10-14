@@ -290,5 +290,5 @@ tasks:
             --global-property models,supportingFiles=utils.go,modelDocs=false \
             --import-mappings uuid.UUID=github.com/google/uuid \
             --type-mappings string+uuid=uuid.UUID \
-            --type-mappings int64=int \
+            --type-mappings int64=int,int32=int \
             --package-name=model
