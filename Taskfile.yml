@@ -18,11 +18,6 @@ tasks:
   build:
     desc: Start Supabase and Docker
     cmds:
-      - task: supabase/start
-      - task: supabase/status/genenv
-      - task: gen
-      - task: go/wire
-      - task: ogen-go
       - task: docker/build
     interactive: true
 
