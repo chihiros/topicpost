@@ -208,6 +208,18 @@ tasks:
     cmds:
       - go generate ./ent
 
+  ent/new:
+    desc: Create new ent schema
+    dir: app
+    cmds:
+      - |
+        if [ "{{.CLI_ARGS}}" = "" ]; then
+          echo "ファイル名を指定してください！"
+          echo "$ task ent/new -- [ファイル名]"
+        else
+          go run -mod=mod entgo.io/ent/cmd/ent new {{.CLI_ARGS}}
+        fi
+
   go/wire:
     desc: Generate wire
     dir: app
