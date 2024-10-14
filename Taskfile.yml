@@ -11,6 +11,8 @@ tasks:
       - task: supabase/start
       - task: supabase/status/genenv
       - task: gen
+      - task: go/wire
+      - task: ogen-go
     interactive: true
 
   build:
