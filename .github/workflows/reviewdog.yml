@@ -11,5 +11,5 @@ jobs:
       - name: golangci-lint
         uses: reviewdog/action-golangci-lint@v2
         with:
-          workdir: ./app
+          workdir: ./api
           golangci_lint_flags: '--timeout 5m'

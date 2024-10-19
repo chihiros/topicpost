@@ -130,19 +130,19 @@ tasks:
 
   gomod/init:
     desc: Initialize go.mod
-    dir: app
+    dir: api
     cmds:
       - go mod init server
 
   gomod/tidy:
     desc: Tidy go.mod
-    dir: app
+    dir: api
     cmds:
       - go mod tidy
 
   gomod/update:
     desc: Update go.mod
-    dir: app
+    dir: api
     cmds:
       - go get -u && go mod tidy
 
@@ -201,13 +201,13 @@ tasks:
 
   gen:
     desc: ORM ent codegen
-    dir: app
+    dir: api
     cmds:
       - go generate ./ent
 
   ent/new:
     desc: Create new ent schema
-    dir: app
+    dir: api
     cmds:
       - |
         if [ "{{.CLI_ARGS}}" = "" ]; then
@@ -219,7 +219,7 @@ tasks:
 
   go/wire:
     desc: Generate wire
-    dir: app
+    dir: api
     cmds:
       - wire ./di
 
@@ -283,7 +283,7 @@ tasks:
             openapitools/openapi-generator-cli generate \
             -i /local/docs/openapi/openapi.yml \
             -g go \
-            -o /local/app/interface/model \
+            -o /local/api/interface/model \
             --global-property models,supportingFiles=utils.go,modelDocs=false \
             --import-mappings uuid.UUID=github.com/google/uuid \
             --type-mappings string+uuid=uuid.UUID \

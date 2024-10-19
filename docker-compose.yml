@@ -7,7 +7,7 @@ services:
     ports:
       - 8686:8080
     volumes:
-      - ./app:/app
+      - ./api:/api
     tty: true
     env_file:
       - .env.supabase.local
