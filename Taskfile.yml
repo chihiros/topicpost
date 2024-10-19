@@ -32,6 +32,12 @@ tasks:
       - task: docker/logs
     interactive: true
 
+  down:
+    desc: Stop Docker
+    cmds:
+      - task: docker/down
+      - task: supabase/stop
+
   check:
     desc: Check required files and commands
     cmds:
@@ -114,7 +120,6 @@ tasks:
   docker/down:
     desc: Stop Docker
     cmds:
-      - task: supabase/stop
       - docker compose down
 
   docker/create/network:
