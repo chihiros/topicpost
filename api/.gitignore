@@ -1,0 +1,6 @@
+/tmp
+/ent/*
+/di/wire_gen.go
+/interface/model/*
+!/ent/generate.go
+!/ent/schema

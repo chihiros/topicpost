@@ -1,12 +1,2 @@
 .task
 .env.supabase.local
-
-/api/tmp
-/api/ent/*
-/api/di/wire_gen.go
-/api/interface/model/*
-!/api/ent/generate.go
-!/api/ent/schema
-
-/supabase/.temp
-/supabase/.branches
