@@ -35,8 +35,8 @@ tasks:
   down:
     desc: Stop Docker
     cmds:
-      - task: docker/down
       - task: supabase/stop
+      - task: docker/down
 
   check:
     desc: Check required files and commands
