@@ -71,4 +71,23 @@ echo "SUPABASE_DB_HOST=$db_host" >> .env.supabase.local
 db_port=5432
 echo "SUPABASE_DB_PORT=$db_port" >> .env.supabase.local
 
-echo ".env.supabase.local file generated successfully"
+cp .env.supabase.local api/.env.supabase.local
+cp .env.supabase.local web/.env.supabase.local
+
+if [ -f .env.supabase.local ]; then
+  echo ".env.supabase.local file generated successfully"
+else
+  echo "Failed to generate .env.supabase.local file"
+fi
+
+if [ -f api/.env.supabase.local ]; then
+  echo "api/.env.supabase.local file generated successfully"
+else
+  echo "Failed to generate api/.env.supabase.local file"
+fi
+
+if [ -f web/.env.supabase.local ]; then
+  echo "web/.env.supabase.local file generated successfully"
+else
+  echo "Failed to generate web/.env.supabase.local file"
+fi
