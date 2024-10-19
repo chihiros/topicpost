@@ -154,7 +154,7 @@ tasks:
           echo "ファイル名を指定してください！"
           echo "$ task goose/create/migration -- [ファイル名]"
         else
-          goose -dir ./schema/migrations create {{.CLI_ARGS}} sql
+          goose -dir ./supabase/schema/migrations create {{.CLI_ARGS}} sql
         fi
 
   goose/create/seed:
@@ -165,39 +165,39 @@ tasks:
           echo "ファイル名を指定してください！"
           echo "$ task goose/create/seed -- [ファイル名]"
         else
-          goose -dir ./schema/seeds create {{.CLI_ARGS}} sql
+          goose -dir ./supabase/schema/seeds create {{.CLI_ARGS}} sql
         fi
 
   goose/migration/status:
     desc: Check migration status
     cmds:
-      - goose -dir ./schema/migrations postgres ${SUPABASE_DB_URL} status
+      - goose -dir ./supabase/schema/migrations postgres ${SUPABASE_DB_URL} status
 
   goose/seed/status:
     desc: Check seed status
     cmds:
-      - goose -dir ./schema/seeds postgres ${SUPABASE_DB_URL} status
+      - goose -dir ./supabase/schema/seeds postgres ${SUPABASE_DB_URL} status
 
   goose/migration/up:
     desc: Migrate up
     cmds:
-      - goose -dir ./schema/migrations postgres ${SUPABASE_DB_URL} up
+      - goose -dir ./supabase/schema/migrations postgres ${SUPABASE_DB_URL} up
     ignore_error: true
 
   goose/migration/down:
     desc: Migrate down
     cmds:
-      - goose -dir ./schema/migrations postgres ${SUPABASE_DB_URL} down
+      - goose -dir ./supabase/schema/migrations postgres ${SUPABASE_DB_URL} down
 
   goose/seed/up:
     desc: Seed up
     cmds:
-      - goose -dir ./schema/seeds postgres ${SUPABASE_DB_URL} up
+      - goose -dir ./supabase/schema/seeds postgres ${SUPABASE_DB_URL} up
 
   goose/seed/down:
     desc: Seed down
     cmds:
-      - goose -dir ./schema/seeds postgres ${SUPABASE_DB_URL} down
+      - goose -dir ./supabase/schema/seeds postgres ${SUPABASE_DB_URL} down
 
   gen:
     desc: ORM ent codegen
