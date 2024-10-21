@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
+import { WindowSize } from "./components/debug/WindowSize";
 import "./tailwind.css";
 
 export const links: LinksFunction = () => [
@@ -33,6 +34,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        <WindowSize />
         <ScrollRestoration />
         <Scripts />
       </body>
