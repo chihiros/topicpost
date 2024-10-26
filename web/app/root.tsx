@@ -7,7 +7,10 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
+import Breadcrumb from "./components/breadcrumb/Breadcrumb";
 import { WindowSize } from "./components/debug/WindowSize";
+import MainContent from "./components/main/MainContent";
+import Sidebar from "./components/sidebar/Sidebar";
 import "./tailwind.css";
 
 export const links: LinksFunction = () => [
@@ -33,9 +36,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <Sidebar />
+        <MainContent>
           <Breadcrumb />
           {children}
-        {children}
+        </MainContent>
         <WindowSize />
         <ScrollRestoration />
         <Scripts />
