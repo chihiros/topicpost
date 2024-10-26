@@ -2,11 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  background-color: #e2e8eb;
+}
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+/* Chromeのデフォルトでついている輪郭の設定をオフにするCSS */
+*:focus {
+  outline: none;
+}
+
+.square {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(16rem);
 }
