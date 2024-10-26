@@ -12,6 +12,7 @@ import { WindowSize } from "./components/debug/WindowSize";
 import MainContent from "./components/main/MainContent";
 import Sidebar from "./components/sidebar/Sidebar";
 import "./tailwind.css";
+import "./tailwind.generated.css";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
