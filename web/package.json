@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "// build": "remix vite:build",
-    "build": "concurrently \"npm run ogen\" \"remix vite:build\"",
+    "build": "npm run generate; remix vite:build",
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
@@ -13,8 +13,8 @@
     "dev:css": "tailwindcss -w -i ./app/tailwind.css -o ./app/tailwind.generated.css",
     "cp": "cp -r ../docs/openapi ./app/services/openapi",
     "rm": "rm -rf ./app/services/openapi/openapi",
-    "ogen": "@openapitools/openapi-generator-cli generate -i app/services/openapi/openapi/openapi.yml -g typescript-axios --additional-properties supportsES6=true,withInterfaces=true -o app/services/openapi/generated/",
-    "generate": "concurrently \"npm run cp\" \"npm run rm\" \"npm run ogen\""
+    "ogen": "openapi-generator-cli generate -i app/services/openapi/openapi/openapi.yml -g typescript-axios --additional-properties supportsES6=true,withInterfaces=true -o app/services/openapi/generated/",
+    "generate": "npm run cp; npm run ogen; npm run rm;"
   },
   "dependencies": {
     "@remix-run/node": "^2.13.1",
