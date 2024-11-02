@@ -1,5 +1,5 @@
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
-import { Form } from "@remix-run/react";
+import type { ActionFunctionArgs } from "@remix-run/node";
+import { Form, redirect } from "@remix-run/react";
 import Text from "../components/atoms/InputTest";
 import Label from "../components/atoms/Label";
 import { BreadcrumbHandle } from "../components/breadcrumb/Breadcrumb";
