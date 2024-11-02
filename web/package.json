@@ -4,13 +4,14 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "remix vite:build",
-    "_dev": "concurrently \"npm run dev:css\" \"remix vite:dev\"",
+    "// build": "remix vite:build",
+    "build": "concurrently \"npm run ogen\" \"remix vite:build\"",
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc",
-    "dev:css": "tailwindcss -w -i ./app/tailwind.css -o ./app/tailwind.generated.css"
+    "dev:css": "tailwindcss -w -i ./app/tailwind.css -o ./app/tailwind.generated.css",
+    "ogen": "cp -r ../docs/openapi ./app/services/openapi; docker run --rm -v $(pwd):/local openapitools/openapi-generator-cli generate -i /local/app/services/openapi/openapi/openapi.yml -g typescript-axios --additional-properties supportsES6=true,withInterfaces=true -o /local/app/services/openapi/generated/; rm -r ./app/services/openapi/openapi; mv ./app/services/openapi/generated/src ./app/services/openapi/openapi; rm -r ./app/services/openapi/openapi/api; rm -rf ./app/services/openapi/openapi/openapi"
   },
   "dependencies": {
     "@remix-run/node": "^2.13.1",
