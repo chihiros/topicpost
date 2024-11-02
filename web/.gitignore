@@ -4,5 +4,5 @@ node_modules
 /build
 .env
 
-app/generated/*
+app/services/openapi/generated/*
 .vercel
