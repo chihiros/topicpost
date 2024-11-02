@@ -4,9 +4,11 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration,
+  ScrollRestoration
 } from "@remix-run/react";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Breadcrumb from "./components/breadcrumb/Breadcrumb";
 import { WindowSize } from "./components/debug/WindowSize";
 import MainContent from "./components/main/MainContent";
@@ -36,6 +38,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <ToastContainer />
         <Sidebar />
         <MainContent>
           <Breadcrumb />
@@ -50,5 +53,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <>
+      <Outlet />
+    </>
+  );
 }

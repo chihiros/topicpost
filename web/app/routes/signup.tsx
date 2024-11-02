@@ -1,17 +1,40 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { Form, redirect } from "@remix-run/react";
+import { json, redirect } from "@remix-run/node";
+import { Form, useActionData } from "@remix-run/react";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 import Text from "../components/atoms/InputTest";
 import Label from "../components/atoms/Label";
 import { BreadcrumbHandle } from "../components/breadcrumb/Breadcrumb";
 import { userApi } from "../services/openapi";
-import { UserRequest, UserResponse } from "../services/openapi/generated";
+import { UserRequest } from "../services/openapi/generated";
 import { SupabaseSignUp } from "../services/supabase/Supabase";
 
 export const handle: BreadcrumbHandle = {
   breadcrumb: () => ({
-    title: "サインアップ"
+    title: "アカウント登録"
   })
 };
+
+const validateForm = (email: string, emailConfirm: string, password: string) => {
+  const message: string[] = [];
+
+  if (email !== emailConfirm) {
+    message.push("メールアドレスが一致しません");
+  }
+
+  if (password.length < 8 || password.length > 64) {
+    message.push("パスワードは8文字以上64文字以下で入力してください");
+  }
+
+  // if (/^[0-9]*$/.test(password) || /^[a-zA-Z]*$/.test(password)) {
+  //   message.push("パスワードは半角英数と記号が利用できます");
+  // }
+
+  if (message.length > 0) {
+    return message;
+  }
+}
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -21,43 +44,38 @@ export async function action({ request }: ActionFunctionArgs) {
   const _emailConfirm = form.emailConfirm.toString();
   const _password = form.password.toString();
 
-  // もし、emailとemailConfirmが一致していない場合はエラーを返す
-  if (_email !== _emailConfirm) {
-    return new Response("メールアドレスとメールアドレス(確認用)が一致しません", {
-      status: 400,
-    });
-  }
-
-  // パスワードが8文字以下で数字だけ、またはアルファベットだけの場合はエラーを返す
-  if (
-    _password.length < 8 || _password.length > 64
-    || /^[0-9]*$/.test(_password)
-    // || /^[a-zA-Z]*$/.test(_password)
-  ) {
-    return new Response("パスワードは8文字以上64文字以下で入力してください", {
-      status: 400,
-    });
+  const message = validateForm(_email, _emailConfirm, _password);
+  if (message) {
+    return json({ error: message });
   }
 
   const { data, error } = await SupabaseSignUp(_email, _password);
   if (error) {
-    console.log({ error });
+    console.log(error.status, error.message);
+    if (error.message === "User already registered") {
+      return json({ error: ["このメールアドレスは既に登録されています"] });
+    }
 
-    return new Response("サインアップに失敗しました", {
-      status: 400,
-    });
+    return json({ error: ["アカウント登録に失敗しました"] });
   }
 
   const res = await userApi.usersPost({
     uid: data?.user?.id ?? "",
   } as UserRequest);
-  const userResponse: UserResponse = res.data;
-  console.log({ userResponse });
 
-  return redirect(request.headers.get("Referer") ?? "/");
+  // return redirect(request.headers.get("Referer") ?? "/");
+  return redirect("/signup/complete");
 }
 
 export default function Login() {
+  const actionData = useActionData<typeof action>();
+
+  useEffect(() => {
+    if (actionData?.error) {
+      actionData.error.map((e: string) => toast.error(e));
+    }
+  }, [actionData]);
+
   return (
     <div className="p-4 bg-gray-50 rounded-lg">
       <div className="flex mb-5 text-3xl">新規アカウントの登録</div>
