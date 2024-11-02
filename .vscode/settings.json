@@ -4,6 +4,7 @@
     "SAMEORIGIN",
     "Supabase",
     "Taskfile",
+    "Toastify",
     "applog",
     "authrization",
     "axios",
@@ -27,6 +28,7 @@
     "osarchitecture",
     "ruleset",
     "sslmode",
+    "toastify",
     "topicpost",
     "usecase"
   ],
