@@ -283,7 +283,7 @@ tasks:
             -i /local/docs/openapi/openapi.yml \
             -g typescript-axios \
             --additional-properties supportsES6=true,withInterfaces=true \
-            -o /local/web/app/generated/
+            -o /local/web/app/services/openapi/generated/
 
   ogen-go:
     desc: Generate OpenAPI client
