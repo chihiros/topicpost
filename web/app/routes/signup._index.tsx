@@ -74,7 +74,7 @@ export default function Login() {
   const actionData = useActionData<typeof action>();
 
   return (
-    <div className="relative bg-gray-50 rounded-lg shadow">
+    <div className="relative bg-white rounded-lg shadow">
       <div className="px-6 py-6 max-w-3xl mx-auto">
         <div className="flex mb-5 text-2xl">新規アカウントの登録</div>
         <Form method="post">
@@ -87,7 +87,6 @@ export default function Login() {
                 id="email"
                 type="email"
                 name="email"
-                className="bg-gray-50"
                 required={true}
                 defaultValue={actionData?.inputValue?.email ?? ""}
               />
@@ -100,7 +99,6 @@ export default function Login() {
                 id="emailConfirm"
                 type="email"
                 name="emailConfirm"
-                className="bg-gray-50"
                 required={true}
                 defaultValue={actionData?.inputValue?.emailConfirm ?? ""}
               />
@@ -114,7 +112,6 @@ export default function Login() {
               id="password"
               type="password"
               name="password"
-              className="bg-gray-50"
               placeholder=""
               required={true}
               defaultValue={actionData?.inputValue?.password ?? ""}
