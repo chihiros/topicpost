@@ -74,66 +74,68 @@ export default function Login() {
   const actionData = useActionData<typeof action>();
 
   return (
-    <div className="p-4 bg-gray-50 rounded-lg">
-      <div className="flex mb-5 text-3xl">新規アカウントの登録</div>
-      <Form method="post">
-        <div className="grid grid-cols-12 gap-4 mb-4">
-          <div className="col-span-12 sm:col-span-6">
-            <Label htmlFor="email" required>
-              メールアドレス
+    <div className="relative bg-gray-50 rounded-lg shadow">
+      <div className="px-6 py-6 max-w-3xl mx-auto">
+        <div className="flex mb-5 text-2xl">新規アカウントの登録</div>
+        <Form method="post">
+          <div className="grid grid-cols-12 gap-4 mb-4">
+            <div className="col-span-12 sm:col-span-6">
+              <Label htmlFor="email" required>
+                メールアドレス
+              </Label>
+              <Text
+                id="email"
+                type="email"
+                name="email"
+                className="bg-gray-50"
+                required={true}
+                defaultValue={actionData?.inputValue?.email ?? ""}
+              />
+            </div>
+            <div className="col-span-12 sm:col-span-6">
+              <Label htmlFor="emailConfirm" required>
+                メールアドレス(確認用)
+              </Label>
+              <Text
+                id="emailConfirm"
+                type="email"
+                name="emailConfirm"
+                className="bg-gray-50"
+                required={true}
+                defaultValue={actionData?.inputValue?.emailConfirm ?? ""}
+              />
+            </div>
+          </div>
+          <div className="mb-4">
+            <Label htmlFor="password" required>
+              パスワード
             </Label>
             <Text
-              id="email"
-              type="email"
-              name="email"
+              id="password"
+              type="password"
+              name="password"
               className="bg-gray-50"
+              placeholder=""
               required={true}
-              defaultValue={actionData?.inputValue?.email ?? ""}
+              defaultValue={actionData?.inputValue?.password ?? ""}
             />
+            <div className="text-gray-500 text-sm mt-2">パスワードは8文字以上64文字以下で入力してください<br />半角英数と記号が利用できます</div>
           </div>
-          <div className="col-span-12 sm:col-span-6">
-            <Label htmlFor="emailConfirm" required>
-              メールアドレス(確認用)
-            </Label>
-            <Text
-              id="emailConfirm"
-              type="email"
-              name="emailConfirm"
-              className="bg-gray-50"
-              required={true}
-              defaultValue={actionData?.inputValue?.emailConfirm ?? ""}
-            />
+          {actionData?.error && (
+            <div className="mb-4 text-red-500">
+              {actionData.error.map((message, index) => (
+                <div key={index}>{message}</div>
+              ))}
+            </div>
+          )}
+          <div className="flex items-center justify-center">
+            <button
+              type="submit"
+              className="w-1/2 py-2.5 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+            >送信</button>
           </div>
-        </div>
-        <div className="mb-4">
-          <Label htmlFor="password" required>
-            パスワード
-          </Label>
-          <Text
-            id="password"
-            type="password"
-            name="password"
-            className="bg-gray-50"
-            placeholder=""
-            required={true}
-            defaultValue={actionData?.inputValue?.password ?? ""}
-          />
-          <div className="text-gray-500 text-sm mt-2">パスワードは8文字以上64文字以下で入力してください<br />半角英数と記号が利用できます</div>
-        </div>
-        {actionData?.error && (
-          <div className="mb-4 text-red-500">
-            {actionData.error.map((message, index) => (
-              <div key={index}>{message}</div>
-            ))}
-          </div>
-        )}
-        <div className="flex items-center justify-center">
-          <button
-            type="submit"
-            className="w-1/2 py-2.5 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
-          >送信</button>
-        </div>
-      </Form>
+        </Form>
+      </div>
     </div>
   );
 }
