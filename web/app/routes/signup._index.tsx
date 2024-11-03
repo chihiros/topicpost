@@ -1,8 +1,6 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
 import Text from "../components/atoms/InputTest";
 import Label from "../components/atoms/Label";
 import { userApi } from "../services/openapi";
@@ -29,27 +27,36 @@ const validateForm = (email: string, emailConfirm: string, password: string) => 
   }
 }
 
+type FormData = {
+  email: string;
+  emailConfirm: string;
+  password: string;
+};
+
 export async function action({ request }: ActionFunctionArgs) {
-  const formData = await request.formData();
-  const form = Object.fromEntries(formData);
+  const fd = await request.formData();
+  const form = Object.fromEntries(fd);
 
-  const _email = form.email.toString();
-  const _emailConfirm = form.emailConfirm.toString();
-  const _password = form.password.toString();
+  const formData: FormData = {
+    email: form.email.toString(),
+    emailConfirm: form.emailConfirm.toString(),
+    password: form.password.toString(),
+  };
 
-  const message = validateForm(_email, _emailConfirm, _password);
+  const message = validateForm(formData.email, formData.emailConfirm, formData.password);
+
   if (message) {
-    return json({ error: message });
+    return json({ error: message, inputValue: formData });
   }
 
-  const { data, error } = await SupabaseSignUp(_email, _password);
+  const { data, error } = await SupabaseSignUp(formData.email, formData.password);
   if (error) {
     console.log(error.status, error.message);
     if (error.message === "User already registered") {
-      return json({ error: ["このメールアドレスは既に登録されています"] });
+      return json({ error: ["このメールアドレスは既に登録されています"], inputValue: formData });
     }
 
-    return json({ error: ["アカウント登録に失敗しました"] });
+    return json({ error: ["アカウント登録に失敗しました"], inputValue: formData });
   }
 
   // const res = await userApi.usersPost({
@@ -66,12 +73,6 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Login() {
   const actionData = useActionData<typeof action>();
 
-  useEffect(() => {
-    if (actionData?.error) {
-      actionData.error.map((e: string) => toast.error(e));
-    }
-  }, [actionData]);
-
   return (
     <div className="p-4 bg-gray-50 rounded-lg">
       <div className="flex mb-5 text-3xl">新規アカウントの登録</div>
@@ -87,7 +88,7 @@ export default function Login() {
               name="email"
               className="bg-gray-50"
               required={true}
-              defaultValue={`example@example.com`}
+              defaultValue={actionData?.inputValue?.email ?? ""}
             />
           </div>
           <div className="col-span-12 sm:col-span-6">
@@ -100,7 +101,7 @@ export default function Login() {
               name="emailConfirm"
               className="bg-gray-50"
               required={true}
-              defaultValue={`example@example.com`}
+              defaultValue={actionData?.inputValue?.emailConfirm ?? ""}
             />
           </div>
         </div>
@@ -115,10 +116,17 @@ export default function Login() {
             className="bg-gray-50"
             placeholder=""
             required={true}
-            defaultValue={`password`}
+            defaultValue={actionData?.inputValue?.password ?? ""}
           />
           <div className="text-gray-500 text-sm mt-2">パスワードは8文字以上64文字以下で入力してください<br />半角英数と記号が利用できます</div>
         </div>
+        {actionData?.error && (
+          <div className="mb-4 text-red-500">
+            {actionData.error.map((message, index) => (
+              <div key={index}>{message}</div>
+            ))}
+          </div>
+        )}
         <div className="flex items-center justify-center">
           <button
             type="submit"
