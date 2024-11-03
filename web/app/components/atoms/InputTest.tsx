@@ -7,7 +7,6 @@ type TextProps = {
   className?: string;
   placeholder?: string;
   required?: boolean;
-  value?: string | null;
   defaultValue?: string;
 };
 
@@ -18,7 +17,6 @@ export default function Text({
   className,
   placeholder,
   required,
-  value,
   defaultValue
 }: TextProps) {
   const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +37,6 @@ export default function Text({
         className={`border text-gray-900 text-sm rounded-lg block w-full p-2.5 ${className}`}
         {...(placeholder ? { placeholder } : {})}
         {...(required ? { required } : {})}
-        {...(value !== null ? { value } : {})}
         {...(defaultValue ? { defaultValue } : {})}
       />
       {type === 'password' && (
