@@ -51,3 +51,19 @@ wireのインストール
 spectralのインストール
 
 [Install Spectral - Stoplight](https://docs.stoplight.io/docs/spectral/b8391e051b7d8-installation)
+
+### ローカル環境の起動
+
+- APIサーバーの起動
+```sh
+task setup
+task build
+task up
+```
+
+- Webサーバーの起動
+```sh
+task npm/i
+task ogen
+task run
+```
