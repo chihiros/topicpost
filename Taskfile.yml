@@ -38,6 +38,12 @@ tasks:
     cmds:
       - cmd: npm run dev
 
+  npm/i:
+    desc: Install npm packages
+    dir: web
+    cmds:
+      - cmd: npm install
+
   down:
     desc: Stop Docker
     cmds:
@@ -47,8 +53,8 @@ tasks:
   check:
     desc: Check required files and commands
     cmds:
-      - task: check/files
       - task: check/commands
+      - task: check/files
 
   check/files:
     desc: Check required files
