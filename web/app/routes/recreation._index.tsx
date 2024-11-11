@@ -6,8 +6,6 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-
-
 export default function RecreationIndex() {
   return (
     <div>
