@@ -7,7 +7,6 @@ import {
   ScrollRestoration
 } from "@remix-run/react";
 
-import { useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import Breadcrumb from "./components/breadcrumb/Breadcrumb";
 import { WindowSize } from "./components/debug/WindowSize";
@@ -29,12 +28,6 @@ export const links: LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
   return (
     <html lang="ja">
       <head>
@@ -44,18 +37,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <Sidebar />
-        <MainContent>
-          <Breadcrumb />
-          {children}
-        </MainContent>
+        <div>
+          <Sidebar />
+          <MainContent>
+            <Breadcrumb />
+            {children}
+          </MainContent>
+        </div>
         <ScrollRestoration />
-        {isClient && (
-          <>
-            <Scripts />
-            <WindowSize />
-          </>
-        )}
+        <Scripts />
+        <WindowSize />
       </body>
     </html>
   );
