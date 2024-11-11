@@ -1,4 +1,4 @@
-# topicpost-api
+# topicpost
 
 ## 開発手順
 
