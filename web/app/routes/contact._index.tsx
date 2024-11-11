@@ -1,3 +1,4 @@
+import { json, useLoaderData } from "@remix-run/react";
 import { BreadcrumbHandle } from "../components/breadcrumb/Breadcrumb";
 
 export const handle: BreadcrumbHandle = {
@@ -6,8 +7,14 @@ export const handle: BreadcrumbHandle = {
   })
 };
 
+export const loader = async () => {
+  const formId = process.env.CONTACT_GOOGLE_FORM_ID;
+
+  return json({ formId: formId });
+}
+
 export default function Index() {
-  const formId = "1FAIpQLSeE8CH-UcQv3r0CVmTxS4QQ8612Tzt4-F1Rj7OxeKiZD5FcQw";
+  const { formId } = useLoaderData<typeof loader>();
 
   return (
     <div>
@@ -17,6 +24,6 @@ export default function Index() {
         height="600"
         title="Contact Form"
       />
-    </div >
+    </div>
   );
 }

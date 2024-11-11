@@ -14,7 +14,8 @@
     "cp": "cp -r ../docs/openapi ./app/services/openapi",
     "rm": "rm -rf ./app/services/openapi/openapi",
     "ogen": "openapi-generator-cli generate -i app/services/openapi/openapi/openapi.yml -g typescript-axios --additional-properties supportsES6=true,withInterfaces=true -o app/services/openapi/generated/",
-    "generate": "npm run cp; npm run ogen; npm run rm;"
+    "generate": "npm run cp; npm run ogen; npm run rm;",
+    "cpenv": "cp .env.example .env; cat .env.supabase.local >> .env"
   },
   "dependencies": {
     "@remix-run/node": "^2.13.1",
@@ -25,6 +26,7 @@
     "@twemoji/parser": "^15.1.1",
     "@vercel/remix": "^2.13.1",
     "axios": "^1.7.7",
+    "cross-env": "^7.0.3",
     "isbot": "^4.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -42,6 +44,8 @@
     "@typescript-eslint/parser": "^6.7.4",
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.0.1",
+    "cross-var": "^1.1.0",
+    "dotenv-cli": "^7.4.2",
     "eslint": "^8.38.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.28.1",
