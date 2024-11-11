@@ -57,7 +57,7 @@ export default function Sidebar() {
         </nav>
         <Footer />
       </div>
-    </aside >
+    </aside>
   );
 }
 
