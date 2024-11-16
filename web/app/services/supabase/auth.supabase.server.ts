@@ -1,0 +1,25 @@
+import { createSupabaseServerClient } from "./supabase.server";
+
+export const SupabaseLoginWithPassword = async (
+  request: Request,
+  email: string,
+  password: string,
+) => {
+  const supabase = createSupabaseServerClient(request);
+  const response = await supabase.client.auth.signInWithPassword({ email, password });
+
+  if (response.error) {
+    if (response.error.code === "invalid_credentials") {
+      throw new Error("メールアドレスまたはパスワードが間違っています");
+    }
+
+    throw new Error("ログインに失敗しました");
+  }
+
+  return Response.json({
+    data: response.data,
+    error: response.error,
+  }, {
+    headers: supabase.headers,
+  });
+}
