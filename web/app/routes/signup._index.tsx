@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import Text from "../components/atoms/InputTest";
 import Label from "../components/atoms/Label";
@@ -46,17 +46,17 @@ export async function action({ request }: ActionFunctionArgs) {
   const message = validateForm(formData.email, formData.emailConfirm, formData.password);
 
   if (message) {
-    return json({ error: message, inputValue: formData });
+    return Response.json({ error: message, inputValue: formData });
   }
 
   const { data, error } = await SupabaseSignUp(formData.email, formData.password);
   if (error) {
     console.log(error.status, error.message);
     if (error.message === "User already registered") {
-      return json({ error: ["このメールアドレスは既に登録されています"], inputValue: formData });
+      return Response.json({ error: ["このメールアドレスは既に登録されています"], inputValue: formData });
     }
 
-    return json({ error: ["アカウント登録に失敗しました"], inputValue: formData });
+    return Response.json({ error: ["アカウント登録に失敗しました"], inputValue: formData });
   }
 
   // const res = await userApi.usersPost({
