@@ -1,4 +1,3 @@
-import { createClient, Provider } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.SUPABASE_API_URL
 if (!supabaseUrl) {
@@ -10,60 +9,51 @@ if (!supabaseKey) {
   throw new Error('SUPABASE_ANON_KEY is not defined')
 }
 
-export const supabaseClient = createClient(supabaseUrl, supabaseKey)
+// export const supabaseClient = createClient(supabaseUrl, supabaseKey)
 
-export const SupabaseLoginWithPassword = async (email: string, password: string) => {
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password,
-  })
+// export const SupabaseEnableProviders = [
+//   'facebook',
+//   'github',
+//   'google',
+//   'twitter',
+// ]
 
-  return { data, error }
-}
+// export const SupabaseSignInWithProvider = async (p: string) => {
+//   const { data, error } = await supabaseClient.auth.signInWithOAuth({
+//     provider: p as Provider,
+//   })
 
-export const SupabaseEnableProviders = [
-  'facebook',
-  'github',
-  'google',
-  'twitter',
-]
+//   return { data, error }
+// }
 
-export const SupabaseSignInWithProvider = async (p: string) => {
-  const { data, error } = await supabaseClient.auth.signInWithOAuth({
-    provider: p as Provider,
-  })
+// export const SupabaseSignUp = async (email: string, password: string) => {
+//   const { data, error } = await supabaseClient.auth.signUp({
+//     email,
+//     password,
+//   })
 
-  return { data, error }
-}
+//   return { data, error }
+// }
 
-export const SupabaseSignUp = async (email: string, password: string) => {
-  const { data, error } = await supabaseClient.auth.signUp({
-    email,
-    password,
-  })
+// export const SupabaseLogout = async () => {
+//   const error = await supabaseClient.auth.signOut()
 
-  return { data, error }
-}
+//   return error
+// }
 
-export const SupabaseLogout = async () => {
-  const error = await supabaseClient.auth.signOut()
+// export const GetSession = async () => {
+//   const { data: { session } } = await supabaseClient.auth.getSession();
 
-  return error
-}
+//   return session;
+// };
 
-export const GetSession = async () => {
-  const { data: { session } } = await supabaseClient.auth.getSession();
+// // GetUserIDはstring | undefinedを返す
+// export const GetUserID = async () => {
+//   const session = await GetSession();
 
-  return session;
-};
+//   if (session) {
+//     return session.user.id;
+//   }
 
-// GetUserIDはstring | undefinedを返す
-export const GetUserID = async () => {
-  const session = await GetSession();
-
-  if (session) {
-    return session.user.id;
-  }
-
-  return undefined;
-}
+//   return undefined;
+// }

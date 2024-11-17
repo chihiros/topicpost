@@ -33,3 +33,20 @@ export const isUserLoggedIn = async (request: Request) => {
 
   return !!user;
 };
+
+export const SupabaseSignOut = async (
+  request: Request,
+) => {
+  const supabase = createSupabaseServerClient(request);
+  const { error } = await supabase.client.auth.signOut();
+
+  if (error) {
+    throw new Error("ログアウトに失敗しました");
+  }
+
+  return Response.json({
+    error,
+  }, {
+    headers: supabase.headers,
+  });
+}

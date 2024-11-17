@@ -1,12 +1,12 @@
 import { ActionFunctionArgs, redirect } from "@remix-run/node";
-import { Form, Link } from "@remix-run/react";
+import { Form, Link, useActionData } from "@remix-run/react";
 import { BsFacebook, BsGithub, BsTwitterX } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import Text from "../components/atoms/InputTest";
 import Label from "../components/atoms/Label";
 import { BreadcrumbHandle } from "../components/breadcrumb/Breadcrumb";
 import { SocialLoginButton, SocialLoginProps } from "../components/login/SocialLoginButton";
-import { SupabaseLoginWithPassword } from "../services/supabase/Supabase";
+import { SupabaseLoginWithPassword } from "../services/supabase/auth.supabase.server";
 
 export const handle: BreadcrumbHandle = {
   breadcrumb: () => ({
@@ -17,28 +17,22 @@ export const handle: BreadcrumbHandle = {
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const form = Object.fromEntries(formData);
-  console.log({ form });
 
   const _email = form.LoginEmail.toString();
   const _password = form.LoginPassword.toString();
 
-  const { data, error } = await SupabaseLoginWithPassword(_email, _password);
-  if (error) {
-    console.log({ error });
-
-    return new Response("ログインに失敗しました", {
-      status: 400,
-    });
+  try {
+    const res = await SupabaseLoginWithPassword(request, _email, _password);
+    console.log(res.headers);
+    return redirect("/", { headers: res.headers });
+  } catch (error) {
+    return Response.json({ error: error });
   }
-
-  console.log({ data });
-
-  // return redirect("/");
-  // 2つ前のページに戻る
-  return redirect(request.headers.get("Referer") ?? "/");
 }
 
 export default function Login() {
+  const actionData = useActionData<typeof action>();
+
   return (
     <>
       <div className="relative bg-white rounded-lg shadow">
@@ -75,6 +69,11 @@ export default function Login() {
                     defaultValue={`password`}
                   />
                 </div>
+                {actionData?.error && (
+                  <div className="text-red-500 text-xs">
+                    ログインに失敗しました<br />入力したメールアドレス、パスワードの確認してください
+                  </div>
+                )}
                 <div className="flex justify-end">
                   <Link
                     to="/login/forget"

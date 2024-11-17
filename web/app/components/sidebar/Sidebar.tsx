@@ -2,6 +2,7 @@ import { Link, NavLink } from "@remix-run/react";
 import type { EmojiEntity } from "@twemoji/parser";
 import { parse } from "@twemoji/parser";
 import SidebarLogin from "./SidebarLogin";
+import SidebarUserInfo from "./SidebarUserInfo";
 
 type SidebarMenu = {
   icon: string;
@@ -33,7 +34,11 @@ export default function Sidebar({ isLoggedIn }: { isLoggedIn: boolean }) {
           <span className="text-3xl font-semibold hover:text-gray-400">TopicPost</span>
         </Link>
 
-        <SidebarLogin />
+        {isLoggedIn ? (
+          <SidebarUserInfo />
+        ) : (
+          <SidebarLogin />
+        )}
 
         <nav>
           <ul>
@@ -53,6 +58,31 @@ export default function Sidebar({ isLoggedIn }: { isLoggedIn: boolean }) {
                 </li>
               </NavLink>
             ))}
+            {isLoggedIn && (
+              <button
+                className="flex p-3 h-17 border-b-2 hover:bg-gray-100 items-center"
+                onClick={async () => {
+                  try {
+                    const response = await fetch("/logout", {
+                      method: "POST"
+                    });
+                    if (!response.ok) {
+                      throw new Error("Failed to logout");
+                    }
+                    window.location.href = "/";
+                  } catch (error) {
+                    console.error("Failed to logout", error);
+                  }
+                }}
+              >
+                <div className="flex rounded-md w-10 h-10">
+                  <EmojiImage emoji="👉" />
+                </div>
+                <span className="ml-4 text-lg text-gray-500 font-semibold">
+                  ログアウト
+                </span>
+              </button>
+            )}
           </ul>
         </nav>
         <Footer />
