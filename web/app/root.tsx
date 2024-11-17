@@ -31,9 +31,6 @@ export const links: LinksFunction = () => [
 
 export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) => {
   const isLoggedIn = await isUserLoggedIn(request);
-  console.log({ isLoggedIn });
-
-
   return Response.json({ isLoggedIn: isLoggedIn });
 }
 
