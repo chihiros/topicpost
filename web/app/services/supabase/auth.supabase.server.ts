@@ -23,3 +23,13 @@ export const SupabaseLoginWithPassword = async (
     headers: supabase.headers,
   });
 }
+
+export const isUserLoggedIn = async (request: Request) => {
+  const supabase = createSupabaseServerClient(request);
+
+  const {
+    data: { user },
+  } = await supabase.client.auth.getUser();
+
+  return !!user;
+};

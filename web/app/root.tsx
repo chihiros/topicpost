@@ -1,10 +1,11 @@
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunction, LoaderFunctionArgs } from "@remix-run/node";
 import {
   Links,
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration
+  ScrollRestoration,
+  useLoaderData
 } from "@remix-run/react";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -12,6 +13,7 @@ import Breadcrumb from "./components/breadcrumb/Breadcrumb";
 import { WindowSize } from "./components/debug/WindowSize";
 import MainContent from "./components/main/MainContent";
 import Sidebar from "./components/sidebar/Sidebar";
+import { isUserLoggedIn } from "./services/supabase/auth.supabase.server";
 import "./tailwind.css";
 
 export const links: LinksFunction = () => [
@@ -27,7 +29,17 @@ export const links: LinksFunction = () => [
   },
 ];
 
+export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) => {
+  const isLoggedIn = await isUserLoggedIn(request);
+  console.log({ isLoggedIn });
+
+
+  return Response.json({ isLoggedIn: isLoggedIn });
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const { isLoggedIn } = useLoaderData<typeof loader>();
+
   return (
     <html lang="ja">
       <head>
@@ -38,7 +50,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <div>
-          <Sidebar />
+          <Sidebar isLoggedIn={isLoggedIn} />
           <MainContent>
             <Breadcrumb />
             {children}

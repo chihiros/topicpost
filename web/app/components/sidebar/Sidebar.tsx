@@ -21,7 +21,7 @@ const SIDEBAR_MENUS: SidebarMenu[] = [
   }
 ] as const;
 
-export default function Sidebar() {
+export default function Sidebar({ isLoggedIn }: { isLoggedIn: boolean }) {
   return (
     <aside
       id="logo-sidebar"
