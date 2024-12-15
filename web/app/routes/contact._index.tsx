@@ -1,4 +1,4 @@
-import { json, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { BreadcrumbHandle } from "../components/breadcrumb/Breadcrumb";
 
 export const handle: BreadcrumbHandle = {
@@ -10,7 +10,7 @@ export const handle: BreadcrumbHandle = {
 export const loader = async () => {
   const formId = process.env.CONTACT_GOOGLE_FORM_ID;
 
-  return json({ formId: formId });
+  return Response.json({ formId: formId });
 }
 
 export default function Index() {
