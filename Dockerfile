@@ -1,8 +1,8 @@
 FROM golang:1.23-bullseye AS docker
 WORKDIR /api
 COPY /api .
-RUN go get github.com/air-verse/air
-RUN go install github.com/air-verse/air
+RUN go get github.com/air-verse/air@v1.61.5
+RUN go install github.com/air-verse/air@v1.61.5
 CMD air
 
 FROM golang:1.23-bullseye AS build

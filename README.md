@@ -5,7 +5,7 @@ TopicPostは、Go + Remix + Supabaseで構築されたモダンなフルスタ�
 ## 🏗️ アーキテクチャ
 
 - **バックエンド**: Go 1.23 + Chi Router + Ent ORM + Wire DI
-- **フロントエンド**: Remix + React 19 + TypeScript + Tailwind CSS
+- **フロントエンド**: Remix 2.15 + React 18.3 + TypeScript 5.7 + Tailwind CSS 3.4
 - **データベース**: Supabase (PostgreSQL) + Goose Migration
 - **API仕様**: OpenAPI 3.0 + 自動型生成
 - **インフラ**: Docker + Docker Compose
@@ -171,11 +171,11 @@ task olint          # OpenAPI仕様書リント
 - **JWT**: 認証トークン
 
 ### フロントエンド
-- **Remix**: フルスタックReactフレームワーク
-- **React 19 Beta**: UIライブラリ
-- **TypeScript**: 型安全性
-- **Tailwind CSS**: ユーティリティファーストCSS
-- **Vite**: ビルドツール
+- **Remix 2.15**: フルスタックReactフレームワーク
+- **React 18.3**: UIライブラリ
+- **TypeScript 5.7**: 型安全性
+- **Tailwind CSS 3.4**: ユーティリティファーストCSS
+- **Vite 6.0**: ビルドツール
 
 ### インフラ・ツール
 - **Supabase**: BaaS (PostgreSQL + Auth + Storage)
