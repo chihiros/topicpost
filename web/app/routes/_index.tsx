@@ -125,7 +125,7 @@ export default function Index() {
       </section>
 
       {/* 最新レクリエーション紹介 */}
-      <section className="py-16 bg-white">
+      <section className="bg-gradient-to-br from-green-50 to-blue-100 py-12">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">最新のレクリエーション</h2>
