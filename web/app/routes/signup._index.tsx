@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
+import { Form, Link, useActionData } from "@remix-run/react";
 import Text from "../components/atoms/InputTest";
 import Label from "../components/atoms/Label";
 // import { userApi } from "../services/openapi";
@@ -64,71 +64,128 @@ export async function action({ request }: ActionFunctionArgs) {
   //   uid: data?.user?.id ?? "",
   // } as UserRequest);
 
-  return redirect("/signup/complete");
+  return redirect("/signup/welcome");
 }
 
 export default function Login() {
   const actionData = useActionData<typeof action>();
 
   return (
-    <div className="relative bg-white rounded-lg shadow">
-      <div className="px-6 py-6 max-w-3xl mx-auto">
-        <div className="flex mb-5 text-2xl">新規アカウントの登録</div>
-        <Form method="post">
-          <div className="grid grid-cols-12 gap-4 mb-4">
-            <div className="col-span-12 sm:col-span-6">
-              <Label htmlFor="email" required>
-                メールアドレス
-              </Label>
-              <Text
-                id="email"
-                type="email"
-                name="email"
-                required={true}
-                defaultValue={actionData?.inputValue?.email ?? ""}
-              />
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl w-full">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="px-8 py-10 sm:px-12">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">TopicPost アカウント作成</h1>
+              <p className="text-gray-600">子ども会活動の輪を広げよう</p>
             </div>
-            <div className="col-span-12 sm:col-span-6">
-              <Label htmlFor="emailConfirm" required>
-                メールアドレス(確認用)
-              </Label>
-              <Text
-                id="emailConfirm"
-                type="email"
-                name="emailConfirm"
-                required={true}
-                defaultValue={actionData?.inputValue?.emailConfirm ?? ""}
-              />
+            
+            <Form method="post" className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor="email" required>
+                    メールアドレス
+                  </Label>
+                  <Text
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="example@topicpost.net"
+                    required={true}
+                    defaultValue={actionData?.inputValue?.email ?? ""}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="emailConfirm" required>
+                    メールアドレス(確認用)
+                  </Label>
+                  <Text
+                    id="emailConfirm"
+                    type="email"
+                    name="emailConfirm"
+                    placeholder="example@topicpost.net"
+                    required={true}
+                    defaultValue={actionData?.inputValue?.emailConfirm ?? ""}
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <Label htmlFor="password" required>
+                  パスワード
+                </Label>
+                <Text
+                  id="password"
+                  type="password"
+                  name="password"
+                  placeholder="••••••••"
+                  required={true}
+                  defaultValue={actionData?.inputValue?.password ?? ""}
+                />
+                <div className="mt-2 space-y-1">
+                  <p className="text-sm text-gray-600">パスワードの要件：</p>
+                  <ul className="text-sm text-gray-500 list-disc list-inside ml-2">
+                    <li>8文字以上64文字以下</li>
+                    <li>半角英数と記号が利用可能</li>
+                  </ul>
+                </div>
+              </div>
+              
+              {actionData?.error && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <div className="text-red-600 text-sm font-medium mb-1">入力内容にエラーがあります</div>
+                  {actionData.error.map((message: string, index: number) => (
+                    <div key={index} className="text-red-600 text-sm flex items-start">
+                      <span className="mr-2">•</span>
+                      <span>{message}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              <div className="space-y-4">
+                <button
+                  type="submit"
+                  className="w-full py-3 px-4 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors font-medium text-lg"
+                >
+                  アカウントを作成
+                </button>
+                
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-300"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-4 bg-white text-gray-500">または</span>
+                  </div>
+                </div>
+                
+                <div className="text-center">
+                  <p className="text-sm text-gray-600">
+                    すでにアカウントをお持ちの方は
+                    <Link
+                      to="/login"
+                      className="ml-1 text-blue-600 hover:text-blue-700 hover:underline font-medium"
+                      prefetch="intent"
+                    >
+                      ログイン
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            </Form>
+            
+            <div className="mt-8 pt-6 border-t border-gray-200">
+              <p className="text-xs text-gray-500 text-center">
+                アカウントを作成することで、TopicPostの
+                <Link to="/terms" className="text-blue-600 hover:underline">利用規約</Link>
+                および
+                <Link to="/privacy" className="text-blue-600 hover:underline">プライバシーポリシー</Link>
+                に同意したものとみなされます。
+              </p>
             </div>
           </div>
-          <div className="mb-4">
-            <Label htmlFor="password" required>
-              パスワード
-            </Label>
-            <Text
-              id="password"
-              type="password"
-              name="password"
-              placeholder=""
-              required={true}
-              defaultValue={actionData?.inputValue?.password ?? ""}
-            />
-            <div className="text-gray-500 text-sm mt-2">パスワードは8文字以上64文字以下で入力してください<br />半角英数と記号が利用できます</div>
-          </div>
-          {actionData?.error && (
-            <div className="mb-4 text-red-500">
-              {actionData.error.map((message: string, index: number) => (
-                <div key={index}>{message}</div>
-              ))}
-            </div>
-          )}
-          <div className="flex items-center justify-center">
-            <button
-              type="submit"
-              className="w-1/2 py-2.5 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
-            >送信</button>
-          </div>
-        </Form>
+        </div>
       </div>
     </div>
   );
