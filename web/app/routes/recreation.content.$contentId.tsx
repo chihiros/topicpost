@@ -1,7 +1,7 @@
 import { type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { BreadcrumbHandle } from "../components/breadcrumb/Breadcrumb";
+import { BreadcrumbHandle } from "../components/molecules/Breadcrumb";
 
 export const handle: BreadcrumbHandle = {
   breadcrumb: () => ({

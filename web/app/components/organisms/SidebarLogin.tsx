@@ -1,8 +1,12 @@
 import { Link } from "@remix-run/react";
 
-export default function SidebarLogin() {
+interface SidebarLoginProps {
+  onCloseSidebar: () => void;
+}
+
+export default function SidebarLogin({ onCloseSidebar }: SidebarLoginProps) {
   return (
-    <Link to="/login">
+    <Link to="/login" onClick={onCloseSidebar}>
       <div
         className="flex flex-col items-center justify-center hover:bg-gray-100 rounded-md p-3 mx-3 h-24"
       >

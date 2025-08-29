@@ -1,19 +1,26 @@
-import { Link, useMatches } from '@remix-run/react';
+import { Link, useMatches, useLocation } from '@remix-run/react';
 
 export type BreadcrumbHandle = {
-  breadcrumb: () => {
+  breadcrumb: (data?: any) => {
     title: string;
+    to?: string;
   };
 };
 
 export default function Breadcrumb() {
   const matches = useMatches();
+  const location = useLocation();
+  
+  // ホーム画面では表示しない
+  if (location.pathname === '/') {
+    return null;
+  }
 
   return (
     <>
       {
         <nav
-          className="flex h-12 mb-5 px-5 p-4 py-3 rounded-lg bg-gray-50 text-gray-500"
+          className="flex h-12 mt-8 mb-5 px-5 p-4 py-3 text-gray-500"
           aria-label="breadcrumbs"
         >
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
@@ -28,14 +35,14 @@ export default function Breadcrumb() {
               </Link>
               {
                 matches
-                  .filter((match) => match.handle?.breadcrumb)
+                  .filter((match) => match.handle && typeof match.handle === 'object' && match.handle !== null && 'breadcrumb' in match.handle)
                   .map((match, index) => {
-                    const breadcrumb = match.handle.breadcrumb();
+                    const breadcrumb = (match.handle as BreadcrumbHandle).breadcrumb(match.data);
                     return (
                       <div key={index}>
                         <div className="flex items-center">
                           <ArrowRight className="mx-1" />
-                          <Link to={match.pathname} prefetch='intent'>
+                          <Link to={breadcrumb.to || match.pathname} prefetch='intent'>
                             <span className="text-sm font-medium">
                               {breadcrumb.title}
                             </span>

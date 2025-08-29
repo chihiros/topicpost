@@ -4,8 +4,8 @@ import { BsFacebook, BsGithub, BsTwitterX } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import Text from "../components/atoms/InputTest";
 import Label from "../components/atoms/Label";
-import { BreadcrumbHandle } from "../components/breadcrumb/Breadcrumb";
-import { SocialLoginButton, SocialLoginProps } from "../components/login/SocialLoginButton";
+import { BreadcrumbHandle } from "../components/molecules/Breadcrumb";
+import { SocialLoginButton, SocialLoginProps } from "../components/molecules/SocialLoginButton";
 import { SupabaseLoginWithPassword } from "../services/supabase/auth.supabase.server";
 
 export const handle: BreadcrumbHandle = {
