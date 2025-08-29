@@ -11,8 +11,12 @@ export default function Breadcrumb() {
   const matches = useMatches();
   const location = useLocation();
   
-  // ホーム画面では表示しない
-  if (location.pathname === '/') {
+  // ホーム画面、ログイン画面、サインアップ画面では表示しない
+  if (location.pathname === '/' || 
+      location.pathname === '/login' || 
+      location.pathname === '/signup' ||
+      location.pathname.startsWith('/login/') ||
+      location.pathname.startsWith('/signup/')) {
     return null;
   }
 
@@ -20,7 +24,7 @@ export default function Breadcrumb() {
     <>
       {
         <nav
-          className="flex h-12 mt-8 mb-5 px-5 p-4 py-3 text-gray-500"
+          className="flex h-12 px-5 p-4 py-3 text-gray-500"
           aria-label="breadcrumbs"
         >
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
