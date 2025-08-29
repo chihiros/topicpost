@@ -1,0 +1,150 @@
+get:
+  tags:
+    - Recreation
+  summary: レクリエーション一覧取得
+  description: レクリエーションの一覧を取得します。フィルタリング、ソート、ページネーションに対応しています。
+  parameters:
+    - name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: ページ番号
+    - name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+      description: 1ページあたりの件数
+    - name: category
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+          enum: [sports, brain, creative, communication]
+      style: form
+      explode: true
+      description: カテゴリフィルタ（複数選択可）
+      example: ["sports", "brain"]
+    - name: location_type
+      in: query
+      schema:
+        type: string
+        enum: [indoor, outdoor]
+      description: 場所タイプフィルタ
+    - name: prefecture
+      in: query
+      schema:
+        type: string
+        maxLength: 2
+      description: 都道府県コードフィルタ
+    - name: target_age_min
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+      description: 対象年齢最小値フィルタ
+    - name: target_age_max
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+      description: 対象年齢最大値フィルタ
+    - name: participant_count_min
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+      description: 参加人数最小値フィルタ
+    - name: participant_count_max
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+      description: 参加人数最大値フィルタ
+    - name: duration_minutes_min
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+      description: 所要時間最小値フィルタ（分）
+    - name: duration_minutes_max
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+      description: 所要時間最大値フィルタ（分）
+    - name: q
+      in: query
+      schema:
+        type: string
+      description: 検索クエリ（タイトル、説明、ルールを対象）
+    - name: sort
+      in: query
+      schema:
+        type: string
+        enum: [created_at_desc, created_at_asc, title_asc, title_desc]
+        default: created_at_desc
+      description: ソート条件
+  responses:
+    200:
+      description: レクリエーション一覧の取得に成功
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RecreationListResponse'
+    400:
+      description: リクエストパラメータが不正
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    500:
+      description: サーバーエラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+post:
+  tags:
+    - Recreation
+  summary: レクリエーション作成
+  description: 新しいレクリエーションを作成します。
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/RecreationRequest'
+  responses:
+    201:
+      description: レクリエーションの作成に成功
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RecreationResponse'
+    400:
+      description: リクエストボディが不正
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    401:
+      description: 認証が必要
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    500:
+      description: サーバーエラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

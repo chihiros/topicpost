@@ -1,0 +1,22 @@
+type: object
+properties:
+  data:
+    type: array
+    items:
+      $ref: './Recreation.yml'
+  total:
+    type: integer
+    description: 総件数
+    example: 100
+  page:
+    type: integer
+    description: 現在のページ番号
+    example: 1
+  per_page:
+    type: integer
+    description: 1ページあたりの件数
+    example: 20
+  message:
+    type: string
+    description: レスポンスメッセージ
+    example: "レクリエーション一覧を取得しました"

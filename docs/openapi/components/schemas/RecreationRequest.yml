@@ -1,0 +1,80 @@
+type: object
+properties:
+  title:
+    type: string
+    maxLength: 100
+    description: ゲーム名/活動名
+    example: "だるまさんがころんだ"
+  description:
+    type: string
+    description: 概要・説明
+    example: "みんなで楽しめる定番ゲームです"
+  target_age_min:
+    type: integer
+    minimum: 1
+    description: 対象年齢最小
+    example: 5
+  target_age_max:
+    type: integer
+    minimum: 1
+    description: 対象年齢最大
+    example: 12
+  participant_count_min:
+    type: integer
+    minimum: 1
+    description: 参加人数最小
+    example: 3
+  participant_count_max:
+    type: integer
+    minimum: 1
+    description: 参加人数最大
+    example: 20
+  duration_minutes:
+    type: integer
+    minimum: 1
+    description: 所要時間（分）
+    example: 15
+  required_items:
+    type: string
+    description: 必要な道具・準備
+    example: "特になし"
+  rules:
+    type: string
+    description: ルール説明
+    example: "鬼が振り返ったときに動いていたらアウト..."
+  tips:
+    type: string
+    description: 注意点・コツ
+    example: "安全な場所で行いましょう"
+  prefecture:
+    type: string
+    maxLength: 2
+    description: 都道府県コード（JIS X 0401準拠）
+    example: "13"
+  category:
+    type: array
+    items:
+      type: string
+      enum: [sports, brain, creative, communication]
+    description: カテゴリ（複数選択可）
+    example: ["sports", "communication"]
+  location_type:
+    type: string
+    enum: [indoor, outdoor]
+    description: 場所タイプ
+    example: "outdoor"
+  image_url:
+    type: string
+    format: uri
+    description: 画像・動画URL（YouTube、画像ファイル対応）
+    example: "https://www.youtube.com/watch?v=example"
+  poster_name:
+    type: string
+    maxLength: 50
+    description: 投稿者名（匿名可）
+    example: "東京のリーダー"
+required:
+  - title
+  - rules
+  - category
+  - location_type

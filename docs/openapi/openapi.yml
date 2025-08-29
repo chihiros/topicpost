@@ -17,6 +17,8 @@ tags:
     description: ユーザー情報に関するAPI
   - name: Profile
     description: プロフィール情報に関するAPI
+  - name: Recreation
+    description: レクリエーション情報に関するAPI
 
 paths:
   /users:
@@ -24,6 +26,12 @@ paths:
 
   /profiles:
     $ref: ./paths/profiles.yml
+
+  /recreations:
+    $ref: ./paths/recreations.yml
+
+  /recreations/{id}:
+    $ref: ./paths/recreations_id.yml
 
   # /profiles:
   # get: # プロフィールの一覧取得
@@ -64,3 +72,15 @@ components:
 
     ProfileListResponse:
       $ref: ./components/schemas/ProfileListResponse.yml
+
+    Recreation:
+      $ref: ./components/schemas/Recreation.yml
+
+    RecreationRequest:
+      $ref: ./components/schemas/RecreationRequest.yml
+
+    RecreationResponse:
+      $ref: ./components/schemas/RecreationResponse.yml
+
+    RecreationListResponse:
+      $ref: ./components/schemas/RecreationListResponse.yml

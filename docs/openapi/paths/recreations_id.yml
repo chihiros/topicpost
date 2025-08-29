@@ -1,0 +1,122 @@
+get:
+  tags:
+    - Recreation
+  summary: レクリエーション詳細取得
+  description: 指定したIDのレクリエーション詳細を取得します。
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int32
+      description: レクリエーションID
+  responses:
+    200:
+      description: レクリエーション詳細の取得に成功
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RecreationResponse'
+    404:
+      description: レクリエーションが見つからない
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    500:
+      description: サーバーエラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+put:
+  tags:
+    - Recreation
+  summary: レクリエーション更新
+  description: 指定したIDのレクリエーションを更新します。
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int32
+      description: レクリエーションID
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/RecreationRequest'
+  responses:
+    200:
+      description: レクリエーションの更新に成功
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RecreationResponse'
+    400:
+      description: リクエストボディが不正
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    401:
+      description: 認証が必要
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    404:
+      description: レクリエーションが見つからない
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    500:
+      description: サーバーエラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+delete:
+  tags:
+    - Recreation
+  summary: レクリエーション削除
+  description: 指定したIDのレクリエーションを削除します。
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int32
+      description: レクリエーションID
+  responses:
+    204:
+      description: レクリエーションの削除に成功
+    401:
+      description: 認証が必要
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    404:
+      description: レクリエーションが見つからない
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    500:
+      description: サーバーエラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

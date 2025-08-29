@@ -1,0 +1,8 @@
+type: object
+properties:
+  data:
+    $ref: './Recreation.yml'
+  message:
+    type: string
+    description: レスポンスメッセージ
+    example: "レクリエーション情報を取得しました"

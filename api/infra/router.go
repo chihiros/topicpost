@@ -13,7 +13,7 @@ import (
 	"github.com/go-chi/cors"
 )
 
-func NewRouter(userController *controller.UserController) *chi.Mux {
+func NewRouter(userController *controller.UserController, recreationController *controller.RecreationController) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(logger.Logger)
 	r.Use(middleware.Recoverer)
@@ -36,6 +36,12 @@ func NewRouter(userController *controller.UserController) *chi.Mux {
 		r.Route("/users", func(r chi.Router) {
 			r.Get("/", userController.GetUsers)
 			r.Post("/", userController.CreateUser)
+		})
+
+		r.Route("/recreations", func(r chi.Router) {
+			r.Get("/", recreationController.GetRecreations)
+			r.Post("/", recreationController.CreateRecreation)
+			r.Get("/{id}", recreationController.GetRecreation)
 		})
 
 		// 疎通確認用のAPI
