@@ -22,18 +22,33 @@ tasks:
     interactive: true
 
   up:
-    desc: Start Docker
+    desc: Start all services (Web, API) with Docker Compose + existing Supabase
     cmds:
       - task: supabase/start
       - task: supabase/status/genenv
       - task: docker/up
-      - task: docker/create/network
       - task: goose/migration/up
-      - task: docker/logs
-    interactive: true
 
+  up/claude:
+    desc: Start all services including Claude Code container
+    cmds:
+      - task: supabase/start
+      - task: supabase/status/genenv
+      - task: docker/up/claude
+      - task: goose/migration/up
+
+  up/force:
+    desc: Force start all services (stop existing first)
+    cmds:
+      - task: down
+      - task: up
   run:
-    desc: Start Docker
+    desc: Start all services with Docker Compose
+    cmds:
+      - task: up
+
+  web-local:
+    desc: Start web server locally (without Docker)
     dir: web
     cmds:
       - cmd: npm run dev
@@ -45,10 +60,17 @@ tasks:
       - cmd: npm install
 
   down:
-    desc: Stop Docker
+    desc: Stop all Docker services and remove networks
     cmds:
       - task: supabase/stop
       - task: docker/down
+
+  down/claude:
+    desc: Stop all Docker services including Claude Code
+    cmds:
+      - task: supabase/stop
+      - docker compose --profile claude down --volumes --remove-orphans
+      - docker network prune -f
 
   claude:
     desc: Start Claude Code Docker environment
@@ -132,9 +154,14 @@ tasks:
       - ./generate_env.sh
 
   docker/up:
-    desc: Start Docker
+    desc: Start Docker services (Web + API only)
     cmds:
-      - docker compose up -d
+      - docker compose up -d --build web api
+
+  docker/up/claude:
+    desc: Start Docker services including Claude Code
+    cmds:
+      - docker compose --profile claude up -d --build
 
   docker/build:
     desc: Build Docker
@@ -144,7 +171,9 @@ tasks:
   docker/down:
     desc: Stop Docker
     cmds:
-      - docker compose down
+      # - docker compose down
+      - docker compose down --volumes --remove-orphans
+      - docker network prune -f
 
   docker/create/network:
     desc: Create Docker network
@@ -210,7 +239,14 @@ tasks:
   goose/migration/up:
     desc: Migrate up
     cmds:
-      - goose -dir ./supabase/schema/migrations postgres ${SUPABASE_DB_URL} up
+      - cmd: |
+          echo "Waiting for Supabase to be ready..."
+          until curl -s http://localhost:54321/rest/v1/ > /dev/null; do
+            echo "Waiting for Supabase API..."
+            sleep 2
+          done
+          echo "Supabase is ready, running migrations..."
+          goose -dir ./supabase/schema/migrations postgres ${SUPABASE_DB_URL} up
     ignore_error: true
 
   goose/migration/down:
