@@ -145,7 +145,7 @@ export default function MypageIndex() {
   };
 
   return (
-    <div className="container mx-auto px-2 py-2 max-w-6xl">
+    <div className="max-w-6xl">
       <div className="bg-white rounded-lg shadow-sm p-6">
         {/* ヘッダー */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">

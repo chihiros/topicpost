@@ -55,10 +55,10 @@ export default function RecreationDetail() {
   const canEdit = user && recreation.poster_name === user.displayName;
 
   return (
-    <div>
+    <div className="-m-8">
       {/* ヘッダーセクション */}
       <section className="bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
-        <div className="container mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex gap-2 mb-3 flex-wrap justify-center">
             {recreation.category.map((cat) => (
               <span key={cat} className={`px-3 py-1 text-sm rounded-full font-medium ${
@@ -99,7 +99,7 @@ export default function RecreationDetail() {
       </section>
 
       <div className="bg-white shadow">
-        <div className="p-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* コンテンツエリア */}
           <div className="mb-6">
             

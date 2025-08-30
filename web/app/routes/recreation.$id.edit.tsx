@@ -100,7 +100,7 @@ export default function RecreationEdit() {
   const [imageUrl, setImageUrl] = useState(recreation.image_url || "");
 
   return (
-    <div className="container mx-auto px-2 py-2 max-w-4xl">
+    <div className="max-w-4xl">
       <div className="bg-white rounded-lg shadow-sm p-6">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">レクリエーション編集</h1>

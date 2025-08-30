@@ -77,7 +77,7 @@ export default function Welcome() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="-m-8 min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl w-full">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="px-8 py-12 sm:px-12 text-center">

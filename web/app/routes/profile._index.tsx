@@ -131,7 +131,7 @@ export default function ProfileIndex() {
   ];
 
   return (
-    <div className="container mx-auto px-2 py-2 max-w-4xl">
+    <div className="max-w-4xl">
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         {/* ヘッダー */}
         <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white">

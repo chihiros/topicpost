@@ -131,7 +131,7 @@ export default function RecreationNew() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="-m-8 min-h-screen bg-white">
       {/* モバイル用タブナビゲーション */}
       <div className="lg:hidden sticky top-16 bg-white border-b z-20">
         <div className="flex">
@@ -163,7 +163,7 @@ export default function RecreationNew() {
         <div className={`lg:w-1/2 overflow-y-auto bg-white ${
           activeTab === 'form' ? 'block' : 'hidden lg:block'
         }`}>
-        <div className="p-6">
+        <div className="p-6 max-w-4xl mx-auto">
             {/* ヘッダー */}
             <div className="mb-6">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">レクリエーション投稿</h1>
@@ -464,7 +464,7 @@ export default function RecreationNew() {
         <div className={`lg:w-1/2 bg-gray-100 overflow-y-auto ${
           activeTab === 'preview' ? 'block' : 'hidden lg:block'
         }`}>
-        <div className="p-6">
+        <div className="p-6 max-w-4xl mx-auto">
           <div className="bg-white rounded-lg shadow">
             <div className="p-6">
               {/* ヘッダー */}

@@ -101,10 +101,10 @@ export default function RecreationIndex() {
   };
 
   return (
-    <div>
+    <div className="-m-8">
       {/* ヘッダーセクション */}
       <section className="bg-gradient-to-br from-green-50 to-blue-100 py-12">
-        <div className="container mx-auto px-4 text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">レクリエーション一覧</h1>
           <p className="text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
             全国のジュニアリーダーが投稿した<br />
@@ -125,7 +125,7 @@ export default function RecreationIndex() {
         </div>
       </section>
 
-      <div className="container mx-auto px-2 py-2">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
       {/* フィルター・検索エリア */}
       <div className="bg-white rounded-lg shadow p-4 mb-6" role="search" aria-label="レクリエーション検索フィルター">
