@@ -3,15 +3,15 @@ version: '3.8'
 services:
   claude-code:
     env_file:
-      - .env.claude
+      - .env
     build:
       context: .
-      dockerfile: Dockerfile.claude
-    container_name: topicpost-claude-dev
+      dockerfile: Dockerfile
+    container_name: claude-code-dev
     working_dir: /home/node/workspace
     volumes:
-      # プロジェクトディレクトリをマウント
-      - .:/home/node/workspace:cached
+      # 親ディレクトリ（プロジェクトルート）をマウント
+      - ..:/home/node/workspace:cached
       # Node.js キャッシュをボリュームマウント（パフォーマンス向上）
       - node_modules_cache:/home/node/workspace/web/node_modules
       - api_cache:/home/node/workspace/api

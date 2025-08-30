@@ -50,6 +50,13 @@ tasks:
       - task: supabase/stop
       - task: docker/down
 
+  claude:
+    desc: Start Claude Code Docker environment
+    dir: claude-docker
+    cmds:
+      - ./start.sh --auto-claude
+    interactive: true
+
   check:
     desc: Check required files and commands
     cmds:

@@ -34,7 +34,7 @@ if [ "$AUTO_START" = true ]; then
 fi
 
 # コンテナをビルド・起動
-docker-compose -f docker-compose.claude.yml up -d --build
+docker-compose up -d --build
 
 # 起動完了を待機
 echo "⏳ Waiting for container to be ready..."
@@ -42,7 +42,7 @@ sleep 3
 
 # Claude認証状態チェック
 echo "🔍 Checking Claude authentication status..."
-AUTH_STATUS=$(docker-compose -f docker-compose.claude.yml exec -T claude-code bash -c "test -f /home/node/.claude/.credentials.json && echo 'authenticated' || echo 'not_authenticated'" 2>/dev/null || echo 'error')
+AUTH_STATUS=$(docker-compose exec -T claude-code bash -c "test -f /home/node/.claude/.credentials.json && echo 'authenticated' || echo 'not_authenticated'" 2>/dev/null || echo 'error')
 
 echo "✅ Container is ready!"
 echo ""
@@ -50,7 +50,7 @@ echo ""
 if [ "$AUTO_START" = true ]; then
     if [ "$AUTH_STATUS" = "authenticated" ]; then
         echo "🚀 Claude Code is starting automatically..."
-        echo "💡 Check logs: docker-compose -f docker-compose.claude.yml logs -f claude-code"
+        echo "💡 Check logs: docker-compose logs -f claude-code"
     else
         echo "⚠️  Claude Code authentication required!"
         echo "🔐 Please connect and run: claude auth"
@@ -58,7 +58,7 @@ if [ "$AUTO_START" = true ]; then
     fi
 else
     echo "🔗 To connect to the container:"
-    echo "  docker-compose -f docker-compose.claude.yml exec claude-code bash"
+    echo "  docker-compose exec claude-code bash"
     echo ""
     echo "🤖 To start Claude Code:"
     echo "  claude  # (run 'claude auth' first time only)"
@@ -66,16 +66,16 @@ fi
 
 echo ""
 echo "📊 Available ports:"
-echo "  - 3000: Remix development server"
-echo "  - 8687: Go API server"
+echo "  - 3000: Development server"
+echo "  - 8686: API server"
 echo "  - 8000, 8080, 5173: Additional development ports"
 echo ""
 
 # インタラクティブモードの場合は自動的にコンテナに接続
 if [ "$INTERACTIVE" = true ] && [ "$AUTO_START" != true ]; then
     echo "🐚 Connecting to container..."
-    docker-compose -f docker-compose.claude.yml exec claude-code bash
+    docker-compose exec claude-code bash
 elif [ "$INTERACTIVE" = true ] && [ "$AUTO_START" = true ] && [ "$AUTH_STATUS" != "authenticated" ]; then
     echo "🐚 Connecting to container for authentication..."
-    docker-compose -f docker-compose.claude.yml exec claude-code bash
+    docker-compose exec claude-code bash
 fi
