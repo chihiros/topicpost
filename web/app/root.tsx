@@ -14,7 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Breadcrumb from "./components/molecules/Breadcrumb";
 import { WindowSize } from "./components/atoms/WindowSize";
 import MainContent from "./components/organisms/MainContent";
-import Sidebar from "./components/organisms/Sidebar";
+import Header from "./components/organisms/Header";
 import { getUser } from "./session.server";
 import "./tailwind.css";
 
@@ -78,7 +78,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <div>
-          <Sidebar isLoggedIn={isLoggedIn} />
+          <Header isLoggedIn={isLoggedIn} />
           <MainContent>
             {children}
             <Breadcrumb />

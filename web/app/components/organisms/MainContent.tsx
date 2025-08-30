@@ -10,7 +10,7 @@ export default function MainContent({ children }: MainContentProps) {
   const isHomePage = location.pathname === '/';
   
   return (
-    <div className="lg:ml-64 break-all pt-16 lg:pt-0">
+    <div className="break-all pt-16">
       {children}
     </div>
   );
