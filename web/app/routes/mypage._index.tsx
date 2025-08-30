@@ -60,8 +60,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await requireUser(request);
   
   try {
+    const apiUrl = process.env.VITE_API_BASE_URL || 'http://localhost:8686';
     // ユーザーの投稿を取得 (Go API)
-    const response = await fetch(`http://localhost:8686/v1/recreations?user_id=${user.displayName}`);
+    const response = await fetch(`${apiUrl}/v1/recreations?user_id=${user.displayName}`);
     
     if (!response.ok) {
       throw new Error('投稿の取得に失敗しました');
@@ -122,7 +123,8 @@ export default function MypageIndex() {
   const handleDelete = async (postId: string) => {
     if (confirm("この投稿を削除してもよろしいですか？")) {
       try {
-        const response = await fetch(`http://localhost:8686/v1/recreations/${postId}`, {
+        const apiUrl = process.env.VITE_API_BASE_URL || 'http://localhost:8686';
+        const response = await fetch(`${apiUrl}/v1/recreations/${postId}`, {
           method: 'DELETE',
         });
         

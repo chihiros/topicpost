@@ -28,7 +28,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const user = await getUser(request);
   
   try {
-    const response = await fetch(`http://localhost:8686/v1/recreations/${id}`);
+    const apiUrl = process.env.VITE_API_BASE_URL || 'http://localhost:8686';
+    const response = await fetch(`${apiUrl}/v1/recreations/${id}`);
     
     if (!response.ok) {
       if (response.status === 404) {

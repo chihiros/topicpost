@@ -15,7 +15,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await requireUser(request);
   
   try {
-    const response = await fetch(`http://localhost:8686/v1/profiles?userId=${user.id}`);
+    const apiUrl = process.env.VITE_API_BASE_URL || 'http://localhost:8686';
+    const response = await fetch(`${apiUrl}/v1/profiles?userId=${user.id}`);
     const data = await response.json();
     
     if (!response.ok) {
@@ -67,7 +68,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       interests: formData.getAll("interests") as string[]
     };
 
-    const response = await fetch('http://localhost:8686/v1/profiles', {
+    const apiUrl = process.env.VITE_API_BASE_URL || 'http://localhost:8686';
+    const response = await fetch(`${apiUrl}/v1/profiles`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -11,7 +11,8 @@ export const meta: MetaFunction = () => {
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
-    const response = await fetch('http://localhost:8686/v1/recreations?per_page=6&sort=created_at_desc');
+    const apiUrl = process.env.VITE_API_BASE_URL || 'http://localhost:8686';
+    const response = await fetch(`${apiUrl}/v1/recreations?per_page=6&sort=created_at_desc`);
     const data = await response.json();
     
     if (!response.ok) {

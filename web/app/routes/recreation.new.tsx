@@ -53,7 +53,8 @@ export const action: ActionFunction = async ({ request }) => {
       poster_name: formData.get("poster_name") as string || null,
     };
 
-    const response = await fetch('http://localhost:8686/v1/recreations', {
+    const apiUrl = process.env.VITE_API_BASE_URL || 'http://localhost:8686';
+    const response = await fetch(`${apiUrl}/v1/recreations`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
