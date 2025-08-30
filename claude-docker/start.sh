@@ -34,6 +34,7 @@ if [ "$AUTO_START" = true ]; then
 fi
 
 # コンテナをビルド・起動
+cd "$(dirname "$0")"
 docker-compose up -d --build
 
 # 起動完了を待機
