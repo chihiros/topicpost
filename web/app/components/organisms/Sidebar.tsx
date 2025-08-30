@@ -71,64 +71,127 @@ export default function Sidebar({ isLoggedIn }: { isLoggedIn: boolean }) {
         } lg:translate-x-0`}
         aria-label="Sidebar"
       >
-      <div className="h-full py-4 overflow-y-auto bg-gray-50">
+      <div className="h-full py-4 overflow-y-auto bg-gray-50 flex flex-col">
         <Link to="/" prefetch="intent" className="flex justify-center pt-2 pb-4" onClick={closeSidebar}>
           <span className="text-3xl font-semibold hover:text-gray-400">TopicPost</span>
         </Link>
 
-        {isLoggedIn ? (
-          <SidebarUserInfo />
-        ) : (
-          <SidebarLogin onCloseSidebar={closeSidebar} />
-        )}
-
-        <nav>
+        <nav className="flex-1">
           <ul>
             {SIDEBAR_MENUS.map((menu, index) => (
-              <NavLink
-                to={menu.link}
-                key={index}
-                prefetch="intent"
-                onClick={closeSidebar}
-              >
-                <li className="flex p-3 h-17 border-b-2 hover:bg-gray-100 items-center">
+              <li key={index} className="flex p-3 h-17 border-b-2 hover:bg-gray-100 items-center">
+                <NavLink
+                  to={menu.link}
+                  prefetch="intent"
+                  onClick={closeSidebar}
+                  className="flex items-center w-full"
+                >
                   <div className="flex rounded-md w-10 h-10">
                     <EmojiImage emoji={menu.icon} />
                   </div>
                   <span className="ml-4 text-lg text-gray-500 font-semibold">
                     {menu.label}
                   </span>
-                </li>
-              </NavLink>
+                </NavLink>
+              </li>
             ))}
+            {!isLoggedIn && (
+              <li className="flex p-3 h-17 border-b-2 hover:bg-gray-100 items-center">
+                <NavLink
+                  to="/login"
+                  prefetch="intent"
+                  onClick={closeSidebar}
+                  className="flex items-center w-full"
+                >
+                  <div className="flex rounded-md w-10 h-10">
+                    <EmojiImage emoji="🔑" />
+                  </div>
+                  <span className="ml-4 text-lg text-gray-500 font-semibold">
+                    ログイン
+                  </span>
+                </NavLink>
+              </li>
+            )}
             {isLoggedIn && (
-              <button
-                className="flex p-3 h-17 border-b-2 hover:bg-gray-100 items-center"
-                onClick={async () => {
-                  closeSidebar();
-                  try {
-                    const response = await fetch("/logout", {
-                      method: "POST"
-                    });
-                    if (!response.ok) {
-                      throw new Error("Failed to logout");
-                    }
-                    window.location.href = "/";
-                  } catch (error) {
-                    console.error("Failed to logout", error);
-                  }
-                }}
-              >
-                <div className="flex rounded-md w-10 h-10">
-                  <EmojiImage emoji="👉" />
-                </div>
-                <span className="ml-4 text-lg text-gray-500 font-semibold">
-                  ログアウト
-                </span>
-              </button>
+              <>
+                <li className="flex p-3 h-17 border-b-2 hover:bg-gray-100 items-center">
+                  <NavLink
+                    to="/recreation/new"
+                    prefetch="intent"
+                    onClick={closeSidebar}
+                    className="flex items-center w-full"
+                  >
+                    <div className="flex rounded-md w-10 h-10">
+                      <EmojiImage emoji="✨" />
+                    </div>
+                    <span className="ml-4 text-lg text-gray-500 font-semibold">
+                      新規投稿
+                    </span>
+                  </NavLink>
+                </li>
+                <li className="flex p-3 h-17 border-b-2 hover:bg-gray-100 items-center">
+                  <NavLink
+                    to="/mypage"
+                    prefetch="intent"
+                    onClick={closeSidebar}
+                    className="flex items-center w-full"
+                  >
+                    <div className="flex rounded-md w-10 h-10">
+                      <EmojiImage emoji="📚" />
+                    </div>
+                    <span className="ml-4 text-lg text-gray-500 font-semibold">
+                      投稿履歴
+                    </span>
+                  </NavLink>
+                </li>
+                <li className="flex p-3 h-17 border-b-2 hover:bg-gray-100 items-center">
+                  <NavLink
+                    to="/profile"
+                    prefetch="intent"
+                    onClick={closeSidebar}
+                    className="flex items-center w-full"
+                  >
+                    <div className="flex rounded-md w-10 h-10">
+                      <EmojiImage emoji="👤" />
+                    </div>
+                    <span className="ml-4 text-lg text-gray-500 font-semibold">
+                      プロフィール
+                    </span>
+                  </NavLink>
+                </li>
+                <li>
+                  <button
+                    className="flex p-3 h-17 border-b-2 hover:bg-gray-100 items-center w-full"
+                    onClick={async () => {
+                      closeSidebar();
+                      try {
+                        const response = await fetch("/auth/logout", {
+                          method: "POST"
+                        });
+                        if (!response.ok) {
+                          throw new Error("Failed to logout");
+                        }
+                        window.location.href = "/";
+                      } catch (error) {
+                        console.error("Failed to logout", error);
+                        // フォールバック: 直接ページリロード
+                        window.location.href = "/";
+                      }
+                    }}
+                  >
+                    <div className="flex rounded-md w-10 h-10">
+                      <EmojiImage emoji="👉" />
+                    </div>
+                    <span className="ml-4 text-lg text-gray-500 font-semibold">
+                      ログアウト
+                    </span>
+                  </button>
+                </li>
+              </>
             )}
           </ul>
         </nav>
+        
         <Footer />
       </div>
     </aside>
@@ -138,7 +201,7 @@ export default function Sidebar({ isLoggedIn }: { isLoggedIn: boolean }) {
 
 function Footer() {
   return (
-    <footer className="absolute bottom-0 w-full p-4">
+    <footer className="w-full p-4 mt-auto">
       <div
         dangerouslySetInnerHTML={{
           __html: `<!-- Contributors, come join us here! https://github.com/chihiros/topicpost-api -->`

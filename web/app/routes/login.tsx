@@ -1,5 +1,5 @@
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
-import { Form, Link, useActionData } from "@remix-run/react";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
 import { BsFacebook, BsGithub, BsTwitterX } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import Text from "../components/atoms/InputTest";
@@ -7,17 +7,25 @@ import Label from "../components/atoms/Label";
 import { SocialLoginButton, SocialLoginProps } from "../components/molecules/SocialLoginButton";
 import { SupabaseLoginWithPassword } from "../services/supabase/auth.supabase.server";
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  const url = new URL(request.url);
+  const redirectTo = url.searchParams.get("redirectTo") || "/";
+  
+  return Response.json({ redirectTo });
+}
+
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const form = Object.fromEntries(formData);
 
   const _email = form.LoginEmail.toString();
   const _password = form.LoginPassword.toString();
+  const redirectTo = form.redirectTo?.toString() || "/";
 
   try {
     const res = await SupabaseLoginWithPassword(request, _email, _password);
     console.log(res.headers);
-    return redirect("/", { headers: res.headers });
+    return redirect(redirectTo, { headers: res.headers });
   } catch (error) {
     return Response.json({ error: error });
   }
@@ -25,6 +33,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function Login() {
   const actionData = useActionData<typeof action>();
+  const { redirectTo } = useLoaderData<typeof loader>();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -64,6 +73,7 @@ export default function Login() {
                 <div className="lg:border-l lg:pl-12">
                   <h2 className="text-lg font-semibold text-gray-700 mb-4">メールアドレスでログイン</h2>
                   <Form className="space-y-5" method="post">
+                    <input type="hidden" name="redirectTo" value={redirectTo} />
                     <div>
                       <Label htmlFor="LoginEmail">メールアドレス</Label>
                       <Text

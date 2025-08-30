@@ -34,6 +34,32 @@ export const isUserLoggedIn = async (request: Request) => {
   return !!user;
 };
 
+export const SupabaseSignUp = async (
+  request: Request,
+  email: string,
+  password: string,
+) => {
+  const supabase = createSupabaseServerClient(request);
+  const response = await supabase.client.auth.signUp({ 
+    email, 
+    password 
+  });
+
+  if (response.error) {
+    if (response.error.message === "User already registered") {
+      throw new Error("このメールアドレスは既に登録されています");
+    }
+    throw new Error("アカウント登録に失敗しました");
+  }
+
+  return Response.json({
+    data: response.data,
+    error: response.error,
+  }, {
+    headers: supabase.headers,
+  });
+};
+
 export const SupabaseSignOut = async (
   request: Request,
 ) => {

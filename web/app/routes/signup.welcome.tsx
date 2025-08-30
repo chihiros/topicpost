@@ -1,7 +1,22 @@
-import { Link } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
+import { LoaderFunctionArgs } from "@remix-run/node";
+import { getUser } from "../session.server";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const user = await getUser(request);
+  return Response.json({ 
+    isLoggedIn: !!user, 
+    user: user ? {
+      id: user.id,
+      email: user.email,
+      displayName: user.displayName
+    } : null
+  });
+}
 
 export default function Welcome() {
+  const { isLoggedIn, user } = useLoaderData<typeof loader>();
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
@@ -13,8 +28,8 @@ export default function Welcome() {
       import('canvas-confetti').then((confettiModule) => {
         const confetti = confettiModule.default;
         
-        // クラッカーアニメーション
-        const duration = 3 * 1000;
+        // クラッカーアニメーション（時間を半分に短縮）
+        const duration = 1.5 * 1000;
         const animationEnd = Date.now() + duration;
         const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
@@ -29,7 +44,7 @@ export default function Welcome() {
             return clearInterval(interval);
           }
 
-          const particleCount = 50 * (timeLeft / duration);
+          const particleCount = 25 * (timeLeft / duration); // 花びらの量を半分に
           
           // 左側から
           confetti({
@@ -48,9 +63,9 @@ export default function Welcome() {
           });
         }, 250);
 
-        // 初回の大きな花火
+        // 初回の大きな花火（花びらの量を半分に）
         confetti({
-          particleCount: 100,
+          particleCount: 50,
           spread: 70,
           origin: { y: 0.6 },
           colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff']
@@ -74,6 +89,11 @@ export default function Welcome() {
               </h1>
               <p className="text-lg text-gray-600 mb-8">
                 アカウントの作成が完了しました
+                {isLoggedIn && user && (
+                  <span className="block text-sm text-blue-600 mt-2">
+                    {user.displayName} としてログイン中
+                  </span>
+                )}
               </p>
             </div>
 
@@ -97,27 +117,27 @@ export default function Welcome() {
             <div className={`space-y-4 mb-8 transform transition-all duration-700 delay-500 ${showContent ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
               <h3 className="text-lg font-semibold text-gray-900">次のステップ</h3>
               <div className="grid gap-4 text-left">
-                <div className="flex items-start space-x-3 bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition-colors">
+                <Link to="/profile" className="flex items-start space-x-3 bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition-colors">
                   <span className="text-2xl">📝</span>
                   <div>
                     <h4 className="font-medium text-gray-900">プロフィールを設定</h4>
                     <p className="text-sm text-gray-600">あなたの活動地域や所属を登録しましょう</p>
                   </div>
-                </div>
-                <div className="flex items-start space-x-3 bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition-colors">
+                </Link>
+                <Link to="/recreation" className="flex items-start space-x-3 bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition-colors">
                   <span className="text-2xl">🎯</span>
                   <div>
                     <h4 className="font-medium text-gray-900">レクリエーションを探す</h4>
                     <p className="text-sm text-gray-600">全国の子ども会活動のアイデアを見つけましょう</p>
                   </div>
-                </div>
-                <div className="flex items-start space-x-3 bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition-colors">
+                </Link>
+                <Link to="/recreation/new" className="flex items-start space-x-3 bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition-colors">
                   <span className="text-2xl">✨</span>
                   <div>
                     <h4 className="font-medium text-gray-900">活動を共有</h4>
                     <p className="text-sm text-gray-600">あなたの地域の活動を全国に発信しましょう</p>
                   </div>
-                </div>
+                </Link>
               </div>
             </div>
 

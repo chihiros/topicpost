@@ -3,9 +3,7 @@ import { redirect } from "@remix-run/node";
 import { Form, Link, useActionData } from "@remix-run/react";
 import Text from "../components/atoms/InputTest";
 import Label from "../components/atoms/Label";
-// import { userApi } from "../services/openapi";
-// import { UserRequest } from "../services/openapi/generated";
-// import { SupabaseSignUp } from "../services/supabase/Supabase";
+import { SupabaseSignUp } from "../services/supabase/auth.supabase.server";
 
 const validateForm = (email: string, emailConfirm: string, password: string) => {
   const message: string[] = [];
@@ -49,22 +47,20 @@ export async function action({ request }: ActionFunctionArgs) {
     return Response.json({ error: message, inputValue: formData });
   }
 
-  // Temporarily disabled API calls for development
-  // const { data, error } = await SupabaseSignUp(formData.email, formData.password);
-  // if (error) {
-  //   console.log(error.status, error.message);
-  //   if (error.message === "User already registered") {
-  //     return Response.json({ error: ["このメールアドレスは既に登録されています"], inputValue: formData });
-  //   }
-
-  //   return Response.json({ error: ["アカウント登録に失敗しました"], inputValue: formData });
-  // }
-
-  // await userApi.usersPost({
-  //   uid: data?.user?.id ?? "",
-  // } as UserRequest);
-
-  return redirect("/signup/welcome");
+  try {
+    const result = await SupabaseSignUp(request, formData.email, formData.password);
+    
+    // サインアップ成功時、Supabaseのヘッダー（認証クッキー）を含めてリダイレクト
+    return redirect("/signup/welcome", {
+      headers: result.headers,
+    });
+  } catch (error: any) {
+    console.error("Signup error:", error);
+    return Response.json({ 
+      error: [error.message], 
+      inputValue: formData 
+    });
+  }
 }
 
 export default function Login() {
