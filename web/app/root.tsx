@@ -15,6 +15,7 @@ import Breadcrumb from "./components/molecules/Breadcrumb";
 import { WindowSize } from "./components/atoms/WindowSize";
 import MainContent from "./components/organisms/MainContent";
 import Header from "./components/organisms/Header";
+import Footer from "./components/organisms/Footer";
 import { getUser } from "./session.server";
 import "./tailwind.css";
 
@@ -83,6 +84,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             {children}
             <Breadcrumb />
           </MainContent>
+          <Footer />
         </div>
         <ScrollRestoration />
         <Scripts />
