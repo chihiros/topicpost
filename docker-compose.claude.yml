@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  claude-code:
+    env_file:
+      - .env.claude
+    build:
+      context: .
+      dockerfile: Dockerfile.claude
+    container_name: topicpost-claude-dev
+    working_dir: /home/node/workspace
+    volumes:
+      # プロジェクトディレクトリをマウント
+      - .:/home/node/workspace:cached
+      # Node.js キャッシュをボリュームマウント（パフォーマンス向上）
+      - node_modules_cache:/home/node/workspace/web/node_modules
+      - api_cache:/home/node/workspace/api
+      # Git設定の永続化（ディレクトリごと）
+      - git_config:/home/node/.git
+      # Claude Code設定の永続化（ホストディレクトリマウント）
+      - ./.claude:/home/node/.claude
+    ports:
+      # Remix開発サーバー
+      - "3000:3000"
+      # Go API サーバー
+      - "8687:8686"
+      # その他の開発用ポート
+      - "8000:8000"
+      - "8080:8080"
+      - "5173:5173"
+    environment:
+      # Node.js の環境設定
+      - NODE_ENV=development
+      # Git の安全ディレクトリ設定
+      - GIT_SAFE_DIRECTORY=/home/node/workspace
+      # Claude Code の設定
+      - CLAUDE_CODE_WORKSPACE=/home/node/workspace
+      # Claude APIキー（オプション：ログイン不要にする場合）
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      # Claude自動起動（true/false）
+      - AUTO_CLAUDE=${AUTO_CLAUDE:-false}
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    # セキュリティ設定
+    security_opt:
+      - no-new-privileges:true
+    # リソース制限
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+
+volumes:
+  node_modules_cache:
+    driver: local
+  api_cache:
+    driver: local
+  git_config:
+    driver: local
+  claude_config:
+    driver: local

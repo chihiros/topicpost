@@ -1,2 +1,6 @@
 .task
 .env.supabase.local
+
+# Claude Code設定（セッション情報含む）
+.claude/
+.env.claude
