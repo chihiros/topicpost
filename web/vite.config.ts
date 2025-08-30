@@ -24,5 +24,12 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     port: 5173,
+    allowedHosts: [
+      "localhost",
+      ".local",
+      ".orb.local",
+      "topicpost-web.local",
+      "web.topicpost.local"
+    ],
   },
 });
