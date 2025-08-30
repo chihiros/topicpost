@@ -1,9 +1,10 @@
-import { MetaFunction, LoaderFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { recreationsDummyData, categoryMap, locationTypeMap, prefectureMap, Recreation } from "~/data/recreations";
+import { MetaFunction, LoaderFunctionArgs, json } from "@remix-run/node";
+import { useLoaderData, Link } from "@remix-run/react";
+import { categoryMap, locationTypeMap, prefectureMap } from "~/data/recreations";
 import { BreadcrumbHandle } from "~/components/molecules/Breadcrumb";
 import { MediaDisplay } from "~/components/atoms/MediaDisplay";
 import { EnhancedMarkdown } from "~/components/molecules/EnhancedMarkdown";
+import { getUser } from "~/session.server";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) {
@@ -16,25 +17,42 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export const handle: BreadcrumbHandle = {
-  breadcrumb: (data: Recreation) => ({
+  breadcrumb: (data: any) => ({
     title: data?.title || "詳細",
     to: `/recreation/${data?.id || ""}`
   })
 };
 
-export const loader: LoaderFunction = ({ params }) => {
-  const id = parseInt(params.id!);
-  const recreation = recreationsDummyData.find(r => r.id === id);
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+  const id = params.id!;
+  const user = await getUser(request);
   
-  if (!recreation) {
-    throw new Response("Not Found", { status: 404 });
+  try {
+    const response = await fetch(`http://localhost:8686/v1/recreations/${id}`);
+    
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Response("レクリエーションが見つかりません", { status: 404 });
+      }
+      throw new Response("レクリエーション情報の取得に失敗しました", { status: 500 });
+    }
+    
+    const data = await response.json();
+    return json({ recreation: data.data, user });
+  } catch (error) {
+    if (error instanceof Response) {
+      throw error;
+    }
+    console.error("Error loading recreation:", error);
+    throw new Response("レクリエーション情報の取得に失敗しました", { status: 500 });
   }
-  
-  return recreation;
 };
 
 export default function RecreationDetail() {
-  const recreation = useLoaderData<Recreation>();
+  const { recreation, user } = useLoaderData<typeof loader>();
+  
+  // Check if current user can edit this recreation
+  const canEdit = user && recreation.poster_name === user.displayName;
 
   return (
     <div>
@@ -59,11 +77,24 @@ export default function RecreationDetail() {
             </span>
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-2 text-center">{recreation.title}</h1>
-          <div className="flex justify-center items-center gap-4 text-sm text-gray-600">
+          <div className="flex justify-center items-center gap-4 text-sm text-gray-600 mb-4">
             <span>👥 {recreation.participant_count_min}-{recreation.participant_count_max}人</span>
             <span>⏱️ {recreation.duration_minutes}分</span>
             <span>🎯 {recreation.target_age_min}-{recreation.target_age_max}歳</span>
           </div>
+          
+          {/* Edit button for post owner */}
+          {canEdit && (
+            <div className="flex justify-center">
+              <Link
+                to={`/recreation/${recreation.id}/edit`}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors inline-flex items-center gap-2"
+              >
+                <span>✏️</span>
+                編集する
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
