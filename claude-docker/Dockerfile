@@ -3,7 +3,8 @@ FROM node:20-slim
 # aliasの設定
 RUN echo "alias ll='ls -alF --color=auto'" >> /root/.bashrc && \
     echo "alias la='ls -A --color=auto'" >> /root/.bashrc && \
-    echo "alias l='ls -CF --color=auto'" >> /root/.bashrc
+    echo "alias l='ls -CF --color=auto'" >> /root/.bashrc && \
+    echo "alias claude-auto='--dangerously-skip-permissions'" >> /root/.bashrc
 
 # 必要なパッケージをインストール
 RUN apt-get update && apt-get install -y \

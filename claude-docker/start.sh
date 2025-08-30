@@ -52,6 +52,9 @@ if [ "$AUTO_START" = true ]; then
         echo "🚀 Claude Code is starting automatically..."
         echo "💡 To check logs: docker-compose logs -f claude-code"
         echo "💡 To connect: docker-compose exec claude-code bash"
+        echo ""
+        echo "🤖 Starting Claude Code session..."
+        docker-compose exec claude-code bash -c "claude --dangerously-skip-permissions"
     else
         echo "⚠️  Claude Code authentication required!"
         echo "🔐 Please connect and run: claude auth"
