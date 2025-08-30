@@ -48,7 +48,7 @@ func createPostgresUrl(db_user, db_password, db_host, db_port, db_name string) s
 		db_name,
 	)
 
-	if db_host == "supabase_db_supabase-local" {
+	if db_host == "supabase_db_supabase-local" || db_host == "host.docker.internal" || os.Getenv("DB_SSL_MODE") == "disable" {
 		url += "?sslmode=disable"
 	}
 
