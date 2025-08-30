@@ -76,3 +76,28 @@ export const SupabaseSignOut = async (
     headers: supabase.headers,
   });
 }
+
+export const SupabaseSignInWithProvider = async (
+  request: Request,
+  provider: "google" | "github" | "twitter" | "facebook"
+) => {
+  const supabase = createSupabaseServerClient(request);
+  const url = new URL(request.url);
+  const redirectUrl = `${url.origin}/auth/callback`;
+  
+  const { data, error } = await supabase.client.auth.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo: redirectUrl,
+    },
+  });
+
+  if (error) {
+    throw new Error(`${provider}ログインに失敗しました`);
+  }
+
+  return {
+    url: data.url,
+    headers: supabase.headers,
+  };
+}
