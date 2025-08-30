@@ -131,26 +131,26 @@ export default function RecreationNew() {
   };
 
   return (
-    <div className="-m-8 min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       {/* モバイル用タブナビゲーション */}
-      <div className="lg:hidden sticky top-16 bg-white border-b z-20">
+      <div className="lg:hidden sticky top-16 bg-white border-b z-20 shadow-sm">
         <div className="flex">
           <button
             onClick={() => setActiveTab('form')}
-            className={`flex-1 py-3 px-4 text-sm font-medium ${
+            className={`flex-1 py-4 px-4 text-sm font-medium transition-colors ${
               activeTab === 'form'
                 ? 'border-b-2 border-blue-500 text-blue-600 bg-blue-50'
-                : 'text-gray-500 hover:text-gray-700'
+                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
             }`}
           >
             📝 入力フォーム
           </button>
           <button
             onClick={() => setActiveTab('preview')}
-            className={`flex-1 py-3 px-4 text-sm font-medium ${
+            className={`flex-1 py-4 px-4 text-sm font-medium transition-colors ${
               activeTab === 'preview'
                 ? 'border-b-2 border-blue-500 text-blue-600 bg-blue-50'
-                : 'text-gray-500 hover:text-gray-700'
+                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
             }`}
           >
             👀 プレビュー
@@ -158,27 +158,52 @@ export default function RecreationNew() {
         </div>
       </div>
 
-      <div className="lg:flex lg:h-screen lg:overflow-hidden">
+      <div className="lg:flex lg:min-h-[calc(100vh-4rem)]">
         {/* 左側: 入力フォーム */}
-        <div className={`lg:w-1/2 overflow-y-auto bg-white ${
+        <div className={`lg:w-1/2 bg-white ${
           activeTab === 'form' ? 'block' : 'hidden lg:block'
         }`}>
-        <div className="p-6 max-w-4xl mx-auto">
+        <div className="p-6 lg:p-8 max-w-4xl mx-auto">
             {/* ヘッダー */}
-            <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">レクリエーション投稿</h1>
-              <p className="text-gray-600">新しいレクリエーションを投稿して、みんなで情報を共有しましょう！</p>
+            <div className="mb-8">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">レクリエーション投稿</h1>
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                新しいレクリエーションを投稿して、全国の子ども会活動を盛り上げましょう！
+                <span className="block mt-1 text-gray-500">※ 必須項目（<span className="text-red-500">*</span>）を入力して投稿してください</span>
+              </p>
             </div>
 
-            {/* Markdownヘルプ */}
-            <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-              <h3 className="font-semibold text-blue-900 mb-2">📝 Markdown記法が使えます</h3>
-              <div className="text-sm text-blue-800 space-y-1">
-                <p><code>**太字**</code> → <strong>太字</strong></p>
-                <p><code>- リスト</code> → • リスト</p>
-                <p><code>## 見出し</code> → 見出し</p>
-                <p><code>&gt; 引用</code> → 引用文</p>
+            {/* 投稿のヒント */}
+            <div className="mb-8 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+              <h3 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
+                💡 投稿のコツ
+              </h3>
+              <div className="text-sm text-blue-800 space-y-2">
+                <div className="flex items-start gap-2">
+                  <span className="text-blue-500 mt-0.5">✓</span>
+                  <span>写真や動画があると、より伝わりやすくなります</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-blue-500 mt-0.5">✓</span>
+                  <span>実際に体験した感想やコツを書くと参考になります</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-blue-500 mt-0.5">✓</span>
+                  <span><strong>太字</strong>や箇条書きで読みやすくしましょう（Markdown対応）</span>
+                </div>
               </div>
+              
+              <details className="mt-3">
+                <summary className="text-sm font-medium text-blue-900 cursor-pointer hover:text-blue-700">
+                  📝 Markdown記法の例を見る
+                </summary>
+                <div className="mt-2 text-xs text-blue-700 bg-white p-3 rounded-lg border space-y-1">
+                  <p><code>**太字**</code> → <strong>太字</strong></p>
+                  <p><code>- リスト項目</code> → • リスト項目</p>
+                  <p><code>## 見出し</code> → <span className="font-semibold">見出し</span></p>
+                  <p><code>&gt; 引用文</code> → <span className="border-l-2 border-gray-300 pl-2 text-gray-600">引用文</span></p>
+                </div>
+              </details>
             </div>
 
             <Form method="post" className="space-y-4">
