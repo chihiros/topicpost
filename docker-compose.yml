@@ -17,6 +17,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_NAME: postgres
+      DB_SSL_MODE: disable
       SUPABASE_JWT_SECRET: super-secret-jwt-token-with-at-least-32-characters-long
 
   web:
@@ -34,6 +35,9 @@ services:
       NODE_ENV: development
       VITE_SUPABASE_URL: http://host.docker.internal:54321
       VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+      VITE_API_BASE_URL: http://host.docker.internal:8686
+      SUPABASE_API_URL: http://host.docker.internal:54321
+      SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
 
   claude-code:
     profiles:
