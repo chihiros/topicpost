@@ -52,9 +52,14 @@ tasks:
 
   claude:
     desc: Start Claude Code Docker environment
-    dir: claude-docker
     cmds:
-      - ./start.sh --auto-claude
+      - ./claude-docker/start.sh
+    interactive: true
+
+  claude/auto:
+    desc: Start Claude Code Docker environment (auto-start mode)
+    cmds:
+      - ./claude-docker/start.sh --auto-claude
     interactive: true
 
   check:
