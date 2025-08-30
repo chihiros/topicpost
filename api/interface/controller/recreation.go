@@ -201,6 +201,11 @@ func (rc *RecreationController) GetRecreations(w http.ResponseWriter, r *http.Re
 		))
 	}
 
+	// Filter by user ID if provided
+	if userID := r.URL.Query().Get("user_id"); userID != "" {
+		query = query.Where(recreation.PosterNameContains(userID))
+	}
+
 	// Get total count
 	total, err := query.Clone().Count(r.Context())
 	if err != nil {
@@ -285,6 +290,123 @@ func (rc *RecreationController) GetRecreation(w http.ResponseWriter, r *http.Req
 	response := RecreationResponse{
 		Data:    convertEntToAPI(recreation),
 		Message: "レクリエーション情報を取得しました",
+	}
+
+	render.Status(r, http.StatusOK)
+	render.JSON(w, r, response)
+}
+
+func (rc *RecreationController) UpdateRecreation(w http.ResponseWriter, r *http.Request) {
+	idStr := chi.URLParam(r, "id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		errorResponse := ErrorResponse{Message: "Invalid ID"}
+		render.Status(r, http.StatusBadRequest)
+		render.JSON(w, r, errorResponse)
+		return
+	}
+
+	var req RecreationRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		applog.Warn(err.Error())
+		errorResponse := ErrorResponse{Message: "Invalid request body"}
+		render.Status(r, http.StatusBadRequest)
+		render.JSON(w, r, errorResponse)
+		return
+	}
+
+	// Check if recreation exists
+	exists, err := rc.Client.Recreation.Query().Where(recreation.ID(id)).Exist(r.Context())
+	if err != nil {
+		applog.Warn(err.Error())
+		errorResponse := ErrorResponse{Message: err.Error()}
+		render.Status(r, http.StatusInternalServerError)
+		render.JSON(w, r, errorResponse)
+		return
+	}
+	if !exists {
+		errorResponse := ErrorResponse{Message: "レクリエーションが見つかりません"}
+		render.Status(r, http.StatusNotFound)
+		render.JSON(w, r, errorResponse)
+		return
+	}
+
+	// Update recreation
+	update := rc.Client.Recreation.UpdateOneID(id).
+		SetTitle(req.Title).
+		SetNillableDescription(req.Description).
+		SetNillableTargetAgeMin(req.TargetAgeMin).
+		SetNillableTargetAgeMax(req.TargetAgeMax).
+		SetNillableParticipantCountMin(req.ParticipantCountMin).
+		SetNillableParticipantCountMax(req.ParticipantCountMax).
+		SetNillableDurationMinutes(req.DurationMinutes).
+		SetNillableRequiredItems(req.RequiredItems).
+		SetRules(req.Rules).
+		SetNillableTips(req.Tips).
+		SetNillablePrefecture(req.Prefecture).
+		SetCategory(req.Category).
+		SetLocationType(recreation.LocationType(req.LocationType)).
+		SetNillableImageURL(req.ImageUrl).
+		SetNillablePosterName(req.PosterName)
+
+	updated, err := update.Save(r.Context())
+	if err != nil {
+		applog.Warn(err.Error())
+		errorResponse := ErrorResponse{Message: err.Error()}
+		render.Status(r, http.StatusInternalServerError)
+		render.JSON(w, r, errorResponse)
+		return
+	}
+
+	response := RecreationResponse{
+		Data:    convertEntToAPI(updated),
+		Message: "レクリエーションを更新しました",
+	}
+
+	render.Status(r, http.StatusOK)
+	render.JSON(w, r, response)
+}
+
+func (rc *RecreationController) DeleteRecreation(w http.ResponseWriter, r *http.Request) {
+	idStr := chi.URLParam(r, "id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		errorResponse := ErrorResponse{Message: "Invalid ID"}
+		render.Status(r, http.StatusBadRequest)
+		render.JSON(w, r, errorResponse)
+		return
+	}
+
+	// Check if recreation exists
+	exists, err := rc.Client.Recreation.Query().Where(recreation.ID(id)).Exist(r.Context())
+	if err != nil {
+		applog.Warn(err.Error())
+		errorResponse := ErrorResponse{Message: err.Error()}
+		render.Status(r, http.StatusInternalServerError)
+		render.JSON(w, r, errorResponse)
+		return
+	}
+	if !exists {
+		errorResponse := ErrorResponse{Message: "レクリエーションが見つかりません"}
+		render.Status(r, http.StatusNotFound)
+		render.JSON(w, r, errorResponse)
+		return
+	}
+
+	// Delete recreation
+	err = rc.Client.Recreation.DeleteOneID(id).Exec(r.Context())
+	if err != nil {
+		applog.Warn(err.Error())
+		errorResponse := ErrorResponse{Message: err.Error()}
+		render.Status(r, http.StatusInternalServerError)
+		render.JSON(w, r, errorResponse)
+		return
+	}
+
+	response := struct {
+		Message string `json:"message"`
+	}{
+		Message: "レクリエーションを削除しました",
 	}
 
 	render.Status(r, http.StatusOK)
