@@ -23,9 +23,11 @@ func main() {
 
 	userController := di.InitializeUserController()
 	recreationController := di.InitializeRecreationController()
+	profileController := di.InitializeProfileController()
 	r := infra.NewRouter(
 		userController,
 		recreationController,
+		profileController,
 	)
 	if err := http.ListenAndServe(":8080", r); err != nil {
 		applog.Panic(err)

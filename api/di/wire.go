@@ -31,3 +31,11 @@ func InitializeRecreationController() *controller.RecreationController {
 	)
 	return nil
 }
+
+func InitializeProfileController() *controller.ProfileController {
+	wire.Build(
+		infra.NewPostgresConnectionX, // DB接続
+		controller.NewProfileController, // コントローラー
+	)
+	return nil
+}
