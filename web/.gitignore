@@ -6,3 +6,5 @@ node_modules
 
 app/services/openapi/generated/*
 .vercel
+
+/generated/prisma

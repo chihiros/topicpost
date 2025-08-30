@@ -15,7 +15,7 @@ import Breadcrumb from "./components/molecules/Breadcrumb";
 import { WindowSize } from "./components/atoms/WindowSize";
 import MainContent from "./components/organisms/MainContent";
 import Sidebar from "./components/organisms/Sidebar";
-import { isUserLoggedIn } from "./services/supabase/auth.supabase.server";
+import { getUser } from "./session.server";
 import "./tailwind.css";
 
 export const links: LinksFunction = () => [
@@ -32,8 +32,24 @@ export const links: LinksFunction = () => [
 ];
 
 export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) => {
-  const isLoggedIn = await isUserLoggedIn(request);
-  return Response.json({ isLoggedIn: isLoggedIn });
+  try {
+    const user = await getUser(request);
+    return Response.json({ 
+      isLoggedIn: !!user, 
+      user: user ? {
+        id: user.id,
+        email: user.email,
+        displayName: user.displayName
+      } : null
+    });
+  } catch (error) {
+    console.error("Error loading user:", error);
+    // エラー時はログインしていないものとして処理
+    return Response.json({ 
+      isLoggedIn: false, 
+      user: null
+    });
+  }
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {

@@ -1,4 +1,4 @@
-import { MetaFunction, ActionFunction, redirect } from "@remix-run/node";
+import { MetaFunction, ActionFunction, redirect, LoaderFunctionArgs, json } from "@remix-run/node";
 import { Form, Link, useNavigation } from "@remix-run/react";
 import { useState } from "react";
 import ReactMarkdown from 'react-markdown';
@@ -6,6 +6,7 @@ import { prefectureMap, categoryMap, locationTypeMap } from "~/data/recreations"
 import { BreadcrumbHandle } from "~/components/molecules/Breadcrumb";
 import { MediaDisplay } from "~/components/atoms/MediaDisplay";
 import { EnhancedMarkdown } from "~/components/molecules/EnhancedMarkdown";
+import { requireUser } from "../session.server";
 
 export const meta: MetaFunction = () => {
   return [
@@ -20,14 +21,59 @@ export const handle: BreadcrumbHandle = {
   })
 };
 
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const user = await requireUser(request);
+  return json({ user });
+};
+
 export const action: ActionFunction = async ({ request }) => {
+  const user = await requireUser(request);
   const formData = await request.formData();
   
-  // TODO: ここで実際のデータベースに保存する処理を実装
-  console.log("投稿データ:", Object.fromEntries(formData));
+  // ユーザーIDをformDataに追加
+  formData.set('userId', user.id);
   
-  // 現在はダミー処理として一覧画面にリダイレクト
-  return redirect("/recreation");
+  try {
+    // FormDataを通常のオブジェクトに変換してJSONで送信
+    const data = {
+      title: formData.get("title") as string,
+      description: formData.get("description") as string || null,
+      target_age_min: formData.get("target_age_min") ? parseInt(formData.get("target_age_min") as string) : null,
+      target_age_max: formData.get("target_age_max") ? parseInt(formData.get("target_age_max") as string) : null,
+      participant_count_min: formData.get("participant_count_min") ? parseInt(formData.get("participant_count_min") as string) : null,
+      participant_count_max: formData.get("participant_count_max") ? parseInt(formData.get("participant_count_max") as string) : null,
+      duration_minutes: formData.get("duration_minutes") ? parseInt(formData.get("duration_minutes") as string) : null,
+      required_items: formData.get("required_items") as string || null,
+      rules: formData.get("rules") as string,
+      tips: formData.get("tips") as string || null,
+      prefecture: formData.get("prefecture") as string || null,
+      category: formData.getAll("category") as string[],
+      location_type: formData.get("location_type") as string,
+      image_url: formData.get("image_url") as string || null,
+      poster_name: formData.get("poster_name") as string || null,
+    };
+
+    const response = await fetch('http://localhost:8686/v1/recreations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    });
+    
+    const result = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(result.message || '投稿の作成に失敗しました');
+    }
+    
+    // 成功時は作成された投稿の詳細ページまたは投稿履歴にリダイレクト
+    return redirect(`/mypage`);
+  } catch (error) {
+    console.error("Error creating post:", error);
+    // エラー時は現在のページに戻る（エラーメッセージは後で実装）
+    return redirect("/recreation/new?error=1");
+  }
 };
 
 export default function RecreationNew() {

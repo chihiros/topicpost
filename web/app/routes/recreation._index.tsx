@@ -1,8 +1,8 @@
-import { MetaFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import { MetaFunction, LoaderFunctionArgs, json } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { recreationsDummyData, categoryMap, locationTypeMap, prefectureMap } from "~/data/recreations";
+import { categoryMap, locationTypeMap, prefectureMap } from "~/data/recreations";
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,8 +10,26 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  try {
+    const response = await fetch('http://localhost:8686/v1/recreations');
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'レクリエーション一覧の取得に失敗しました');
+    }
+    
+    return json({ recreations: data.data || [] });
+  } catch (error) {
+    console.error("Error loading recreations:", error);
+    // エラー時は空の配列を返す
+    return json({ recreations: [] });
+  }
+};
+
 
 export default function RecreationIndex() {
+  const { recreations } = useLoaderData<typeof loader>();
   const [filters, setFilters] = useState({
     category: '',
     location_type: '',
@@ -20,7 +38,7 @@ export default function RecreationIndex() {
   });
 
   const filteredRecreations = useMemo(() => {
-    return recreationsDummyData.filter((recreation) => {
+    return recreations.filter((recreation: any) => {
       // カテゴリフィルタ
       if (filters.category && !recreation.category.includes(filters.category as 'sports' | 'brain' | 'creative' | 'communication')) {
         return false;
@@ -64,7 +82,7 @@ export default function RecreationIndex() {
 
       return true;
     });
-  }, [filters]);
+  }, [filters, recreations]);
 
   const handleFilterChange = (filterType: string, value: string) => {
     setFilters(prev => ({

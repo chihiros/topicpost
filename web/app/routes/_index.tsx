@@ -1,6 +1,6 @@
-import { MetaFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
-import { recreationsDummyData, categoryMap, locationTypeMap } from "~/data/recreations";
+import { MetaFunction, LoaderFunctionArgs, json } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
+import { categoryMap, locationTypeMap } from "~/data/recreations";
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,17 +9,36 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  try {
+    const response = await fetch('http://localhost:8686/v1/recreations?per_page=6&sort=created_at_desc');
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'レクリエーション一覧の取得に失敗しました');
+    }
+    
+    return json({ recreations: data.data || [] });
+  } catch (error) {
+    console.error("Error loading recreations:", error);
+    // エラー時は空の配列を返す
+    return json({ recreations: [] });
+  }
+};
+
 export default function Index() {
+  const { recreations } = useLoaderData<typeof loader>();
+  
   // 最新のレクリエーション（最初の6件を表示）
-  const featuredRecreations = recreationsDummyData.slice(0, 6);
+  const featuredRecreations = recreations.slice(0, 6);
   
   // カテゴリ別の統計情報
   const stats = {
-    total: recreationsDummyData.length,
-    sports: recreationsDummyData.filter(r => r.category.includes('sports')).length,
-    brain: recreationsDummyData.filter(r => r.category.includes('brain')).length,
-    creative: recreationsDummyData.filter(r => r.category.includes('creative')).length,
-    communication: recreationsDummyData.filter(r => r.category.includes('communication')).length,
+    total: recreations.length,
+    sports: recreations.filter((r: any) => r.category.includes('sports')).length,
+    brain: recreations.filter((r: any) => r.category.includes('brain')).length,
+    creative: recreations.filter((r: any) => r.category.includes('creative')).length,
+    communication: recreations.filter((r: any) => r.category.includes('communication')).length,
   };
 
   return (
